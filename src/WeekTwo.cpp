@@ -1,4 +1,4 @@
-#include "OOSD.h"
+#include "WeightWatchers.h"
 
 double bodyMassIndex(double height, double weight){
 	double bmi = weight / pow(height, 2);

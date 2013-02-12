@@ -1,4 +1,4 @@
-#include "OOSD.h"
+#include "WeightWatchers.h"
 
 int main() {
 	double bmi = bodyMassIndex(1.8, 75.0);

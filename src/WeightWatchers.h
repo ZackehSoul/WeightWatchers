@@ -1,5 +1,5 @@
-#ifndef OOSD_H_
-#define OOSD_H_
+#ifndef WeightWatchers_H_
+#define WeightWatchers_H_
 #include <iostream>
 #include <cmath>
 
