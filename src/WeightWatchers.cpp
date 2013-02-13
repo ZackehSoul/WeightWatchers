@@ -14,5 +14,7 @@ int main() {
 	cout << "Lean Body Weight is " << lbw << " kilograms." << endl;
 	cout << clientGender << endl;
 	cout << bmiResult << endl;
-	return 0;
+	test();
+	teddyBear();
+	toddler();
 }

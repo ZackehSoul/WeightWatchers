@@ -11,7 +11,7 @@ double bodySurfaceArea(double height, double weight){
 }
 
 double leanBodyWeight(double height, double weight, char gender){
-	double lbw;
+	double lbw = 0;
 	if (gender == ('M' | 'm')){
 		lbw = (1.10 * weight) - (128 * (pow(weight, 2) / pow(height, 2)));
 	} else if (gender == ('F' | 'f')){
