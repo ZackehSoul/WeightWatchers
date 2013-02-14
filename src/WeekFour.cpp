@@ -4,10 +4,10 @@ void test() {
 	// Create two people, foo & bar.
 	PersonData foo, bar;
 	// Create new person rumple with the given data
-	PersonData rumple = { 1.75, 77, 'F' };
+	PersonData rumple = { 175, 77, 'F' };
 
 	// Assign data to foo
-	foo.height = 1.75;
+	foo.height = 175;
 	foo.weight = 77;
 	foo.gender = 'M';
 
@@ -39,7 +39,6 @@ void teddyBear(){
 
 	cout << "rupert's data is : " <<  rupert.height  << " : "
 			<< rupert.colour << endl;
-
 }
 
 void toddler(){
@@ -55,5 +54,4 @@ void toddler(){
 			<< fred.kiddy.gender << " : "
 			<< fred.bruin.height << " : "
 			<< fred.bruin.colour << endl;
-
 }

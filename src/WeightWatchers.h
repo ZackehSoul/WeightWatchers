@@ -1,5 +1,5 @@
-#ifndef WeightWatchers_H_
-#define WeightWatchers_H_
+#ifndef WEIGHT_WATCHERS_H_
+#define WEIGHT_WATCHERS_H_
 #include <iostream>
 #include <cmath>
 #include <vector>

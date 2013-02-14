@@ -1,7 +1,7 @@
 #include "WeightWatchers.h"
 
 double bodyMassIndex(double height, double weight){
-	double bmi = weight / pow((height / 100), 2);
+	double bmi = floorf((weight / pow((height / 100), 2)) * 100) / 100;
 	return bmi;
 }
 
@@ -19,3 +19,4 @@ double leanBodyWeight(double height, double weight, char gender){
 	}
 	return lbw;
 }
+
