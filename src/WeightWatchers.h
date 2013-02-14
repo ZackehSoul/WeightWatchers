@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
+#include <stdio.h>
 
 using namespace std;
 
@@ -11,6 +12,7 @@ double bodySurfaceArea(double height, double weight);
 double leanBodyWeight(double height, double weight, char gender);
 string getGender(char gender);
 string bodyMassResult(double bmi, char gender);
+double twoDecimalPlaces(double x);
 void test();
 void teddyBear();
 void toddler();
@@ -24,11 +26,24 @@ struct PersonData {
 struct TeddyBear {
   double height;
   string colour;
+  string toString();
 };
 
 struct Toddler {
   PersonData kiddy;
   TeddyBear bruin;
+};
+
+class ShyBear{
+private:
+	double height;
+	string colour;
+public:
+	string getColour();
+	void setColour(string);
+	double getHeight();
+	void setHeight(double);
+	string toString();
 };
 
 #endif
