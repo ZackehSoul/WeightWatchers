@@ -1,9 +1,8 @@
 #include "WeightWatchers.h"
 
 int main() {
-	char gender = 'm';
-	double height = 175;
-	double weight = 77;
+	double height; double weight; char gender;
+	cin >> height >> weight >> gender;
 	double bmi = bodyMassIndex(height, weight);
 	double bsa = bodySurfaceArea(height, weight);
 	double lbw = leanBodyWeight(height, weight, gender);
