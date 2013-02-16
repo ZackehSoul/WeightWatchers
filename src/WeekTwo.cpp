@@ -15,9 +15,9 @@ double bodySurfaceArea(double height, double weight){
 double leanBodyWeight(double height, double weight, char gender){
 	double lbw = 0;
 	// Rounds LBW to two decimal places.
-	if (gender == ('M' | 'm')){
+	if (gender == 'M' || gender == 'm'){
 		lbw = (1.10 * weight) - (128 * (pow(weight, 2) / pow(height, 2)));
-	} else if (gender == ('F' | 'f')){
+	} else if (gender == 'F' || gender == 'f'){
 		lbw = (1.07 * weight) - (148 * (pow(weight, 2) / pow(height, 2)));
 	}
 	return twoDecimalPlaces(lbw);

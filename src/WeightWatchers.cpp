@@ -2,7 +2,9 @@
 
 int main() {
 	double height; double weight; char gender;
-	cin >> height >> weight >> gender;
+	cout << "Please enter the client's height(cm): "; cin >> height;
+	cout << "Please enter the client's weight(kg): "; cin >> weight;
+	cout << "Please enter the client's gender: "; cin >> gender;
 	double bmi = bodyMassIndex(height, weight);
 	double bsa = bodySurfaceArea(height, weight);
 	double lbw = leanBodyWeight(height, weight, gender);

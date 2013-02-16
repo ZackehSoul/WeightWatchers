@@ -12,7 +12,7 @@ string getGender(char gender){
 
 string bodyMassResult(double bmi, char gender){
 	string result;
-	if (gender == ('M' | 'm')){
+	if (gender == 'M' || gender == 'm'){
 		if (bmi < 20.7){
 			result = "underweight.";
 		} else if (bmi >= 20.7 && bmi < 26.4){
@@ -24,7 +24,7 @@ string bodyMassResult(double bmi, char gender){
 		} else if (bmi >= 31.1){
 			result = "obese.";
 		}
-	} else if (gender == ('F' | 'f')){
+	} else if (gender == 'F' || gender == 'f'){
 		if (bmi < 19.1){
 			result = "underweight.";
 		} else if (bmi >= 19.1 && bmi < 25.8){
