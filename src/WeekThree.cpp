@@ -12,11 +12,9 @@ string getGender(char gender){
 
 string bodyMassResult(double bmi, char gender){
 	string result;
-	if (gender == ('M' | 'm')){
-		double maleBoundaries[] = {20.7, 26.4, 27.8, 31.1};
+	if (gender == 'M' || gender == 'm'){
 		result = getBodyMassResults(bmi, maleBoundaries);
-	} else if (gender == ('F' | 'f')){
-		double femaleBoundaries[] = {19.1, 25.8, 27.3, 32.3};
+	} else if (gender == 'F' || gender == 'f'){
 		result = getBodyMassResults(bmi, femaleBoundaries);
 	}
 	return "Your body mass index indicates that you are " + result;
@@ -24,21 +22,20 @@ string bodyMassResult(double bmi, char gender){
 
 string getBodyMassResults(double bmi, double genderBoundaries[]){
 	string result;
-	for(int i = 0; i < 5; i++){
+	for(int i = 0; i <= 4; i++){
 		if(i == 0){
-			if(bmi < genderBoundaries(i)){
-				result = bodyMassBoundaries(i);
+			if(bmi < genderBoundaries[i]){
+				result = bodyMassBoundaries[i];
 			}
-		} else if (i > 0 && (i - 2) < 5 && i != 5){
-			if(bmi >= genderBoundaries(i) && bmi < genderBoundaries(i + 1)){
-				result = bodyMassBoundaries(i);
+		} else if (i > 0 && i != 4){
+			if(bmi >= genderBoundaries[i - 1] && bmi < genderBoundaries[i]){
+				result = bodyMassBoundaries[i];
 			}
-		} else if (i == 5){
-			if(bmi > genderBoundaries(i)){
-				result = bodyMassBoundaries(i);
+		} else if (i == 4){
+			if(bmi > genderBoundaries[i - 1]){
+				result = bodyMassBoundaries[i];
 			}
 		}
 	}
 	return result;
 }
-
