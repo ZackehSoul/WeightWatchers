@@ -4,7 +4,6 @@
 #include <cmath>
 #include <vector>
 #include <cstdio>
-#include <array>
 
 using namespace std;
 
@@ -15,7 +14,9 @@ string getGender(char gender);
 string bodyMassResult(double bmi, char gender);
 double twoDecimalPlaces(double x);
 string getBodyMassResults(double bmi, double arr[]);
-string bodyMassBoundaries[] = {"underweight.", "of ideal weight.", "marginally overweight.", "overweight.", "obese."};
+static string bodyMassBoundaries[] = {"underweight.", "of ideal weight.", "marginally overweight.", "overweight.", "obese."};
+static double maleBoundaries[] = {20.7, 26.4, 27.8, 31.1};
+static double femaleBoundaries[] = {19.1, 25.8, 27.3, 32.3};
 
 void test();
 void teddyBear();
