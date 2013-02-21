@@ -3,7 +3,8 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
-#include <stdio.h>
+#include <cstdio>
+#include <array>
 
 using namespace std;
 
@@ -13,6 +14,9 @@ double leanBodyWeight(double height, double weight, char gender);
 string getGender(char gender);
 string bodyMassResult(double bmi, char gender);
 double twoDecimalPlaces(double x);
+string getBodyMassResults(double bmi, double arr[]);
+string bodyMassBoundaries[] = {"underweight.", "of ideal weight.", "marginally overweight.", "overweight.", "obese."};
+
 void test();
 void teddyBear();
 void toddler();
