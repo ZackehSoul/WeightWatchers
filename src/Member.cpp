@@ -8,14 +8,34 @@ Member::~Member() {
 	// TODO Auto-generated destructor stub
 }
 
+string Member::getMemberName(){
+	return memberName;
+}
+
 char Member::getGender(){
-	return Member::gender;
+	return gender;
 }
 
 double Member::getHeight(){
-	return Member::height;
+	return height;
 }
 
 double Member::getWeight(){
-	return Member::weight;
+	return weight;
+}
+
+void Member::setMemberName(string name){
+	Member::memberName = name;
+}
+
+void Member::setGender(char gender){
+	Member::gender = gender;
+}
+
+void Member::setHeight(double height){
+	Member::height = height;
+}
+
+void Member::setWeight(double weight){
+	Member::weight = weight;
 }
