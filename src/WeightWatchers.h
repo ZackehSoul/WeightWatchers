@@ -7,11 +7,9 @@
 
 using namespace std;
 
-void test();
-void teddyBear();
-void toddler();
-
+string exitStatus;
 void calculateStatistics();
+void toReturnOrExit();
 
 struct PersonData {
 	double height;
