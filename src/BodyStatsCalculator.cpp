@@ -20,12 +20,12 @@ double BodyStatsCalculator::bodySurfaceArea(double height, double weight){
 	return twoDecimalPlaces(bsa);
 }
 
-double BodyStatsCalculator::leanBodyWeight(double height, double weight, char gender){
+double BodyStatsCalculator::leanBodyWeight(double height, double weight, string gender){
 	double lbw = 0;
 	// Rounds LBW to two decimal places.
-	if (gender == 'M' || gender == 'm'){
+	if (gender == "m" || gender == "male"){
 		lbw = (1.10 * weight) - (128 * (pow(weight, 2) / pow(height, 2)));
-	} else if (gender == 'F' || gender == 'f'){
+	} else if (gender == "f" || gender == "female"){
 		lbw = (1.07 * weight) - (148 * (pow(weight, 2) / pow(height, 2)));
 	}
 	return twoDecimalPlaces(lbw);
@@ -36,21 +36,21 @@ double BodyStatsCalculator::twoDecimalPlaces(double x){
 	return x;
 }
 
-string BodyStatsCalculator::getGender(char gender){
+string BodyStatsCalculator::getGender(string gender){
 	string clientGender;
-	if (gender == 'M' || gender == 'm'){
+	if (gender == "m" || gender == "male"){
 		clientGender = "Your gender is male.";
-	} else if (gender == 'F' || gender == 'f'){
+	} else if (gender == "f" || gender == "female"){
 		clientGender = "Your gender is female.";
 	}
 	return clientGender;
 }
 
-string BodyStatsCalculator::bodyMassResult(double bmi, char gender){
+string BodyStatsCalculator::bodyMassResult(double bmi, string gender){
 	string result;
-	if (gender == 'M' || gender == 'm'){
+	if (gender == "m" || gender == "male"){
 		result = getBodyMassResults(bmi, maleBoundaries);
-	} else if (gender == 'F' || gender == 'f'){
+	} else if (gender == "f" || gender == "female"){
 		result = getBodyMassResults(bmi, femaleBoundaries);
 	}
 	return result;

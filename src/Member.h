@@ -10,18 +10,18 @@ private:
 	string memberName;
 	double height;
 	double weight;
-	char gender;
+	string gender;
 public:
 	Member();
 	virtual ~Member();
 	string getMemberName();
 	double getHeight();
 	double getWeight();
-	char getGender();
+	string getGender();
 	void setMemberName(string);
 	void setHeight(double);
 	void setWeight(double);
-	void setGender(char);
+	void setGender(string);
 };
 
 #endif

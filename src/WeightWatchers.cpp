@@ -20,7 +20,7 @@ int main() {
 
 void calculateStatistics(){
 	BodyStatsCalculator * pStats = new BodyStatsCalculator();
-	string memberName; double height; double weight; char gender;
+	string memberName; double height; double weight; string gender;
 
 	cout << "Please enter the required information:\n" << endl;
 	Member member;
@@ -31,7 +31,8 @@ void calculateStatistics(){
 	cout << "Please enter your weight(kg): "; cin >> weight;
 	member.setWeight(weight);
 	cout << "Please enter your gender: "; cin >> gender; cout << endl;
-	member.setGender(gender);
+	member.setGender(toLowerCase(gender));
+
 
 	double bmi = pStats->bodyMassIndex(member.getHeight(), member.getWeight());
 	double bsa = pStats->bodySurfaceArea(member.getHeight(), member.getWeight());
@@ -57,4 +58,10 @@ void toReturnOrExit(){
 	if(selection == "exit"){
 		exitStatus = "exit";
 	}
+}
+
+string toLowerCase(string &gender)
+{
+	transform(gender.begin(), gender.end(), gender.begin(), ::tolower);
+	return gender;
 }

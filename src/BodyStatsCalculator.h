@@ -12,11 +12,11 @@ public:
 	virtual ~BodyStatsCalculator();
 	double bodyMassIndex(double height, double weight);
 	double bodySurfaceArea(double height, double weight);
-	double leanBodyWeight(double height, double weight, char gender);
-	string bodyMassResult(double bmi, char gender);
+	double leanBodyWeight(double height, double weight, string gender);
+	string bodyMassResult(double bmi, string gender);
 	double twoDecimalPlaces(double x);
 	string getBodyMassResults(double bmi, double arr[]);
-	string getGender(char gender);
+	string getGender(string gender);
 };
 
 static string bodyMassBoundaries[] = {"underweight.", "of ideal weight.", "marginally overweight.", "overweight.", "obese."};

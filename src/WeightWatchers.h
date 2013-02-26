@@ -4,12 +4,14 @@
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
+#include <algorithm>
 
 using namespace std;
 
 string exitStatus;
 void calculateStatistics();
 void toReturnOrExit();
+string toLowerCase(string &);
 
 struct PersonData {
 	double height;

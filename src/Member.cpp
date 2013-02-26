@@ -12,7 +12,7 @@ string Member::getMemberName(){
 	return memberName;
 }
 
-char Member::getGender(){
+string Member::getGender(){
 	return gender;
 }
 
@@ -28,7 +28,7 @@ void Member::setMemberName(string name){
 	Member::memberName = name;
 }
 
-void Member::setGender(char gender){
+void Member::setGender(string gender){
 	Member::gender = gender;
 }
 
