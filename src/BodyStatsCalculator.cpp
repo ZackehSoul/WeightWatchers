@@ -39,9 +39,9 @@ double BodyStatsCalculator::twoDecimalPlaces(double x){
 string BodyStatsCalculator::getGender(char gender){
 	string clientGender;
 	if (gender == 'M' || gender == 'm'){
-		clientGender = "The client's gender is male.";
+		clientGender = "Your gender is male.";
 	} else if (gender == 'F' || gender == 'f'){
-		clientGender = "The client's gender is female.";
+		clientGender = "Your gender is female.";
 	}
 	return clientGender;
 }
@@ -53,7 +53,7 @@ string BodyStatsCalculator::bodyMassResult(double bmi, char gender){
 	} else if (gender == 'F' || gender == 'f'){
 		result = getBodyMassResults(bmi, femaleBoundaries);
 	}
-	return "Your body mass index indicates that you are " + result;
+	return result;
 }
 
 string BodyStatsCalculator::getBodyMassResults(double bmi, double genderBoundaries[]){
