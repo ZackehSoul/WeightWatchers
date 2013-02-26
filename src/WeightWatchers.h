@@ -3,12 +3,15 @@
 #include <iostream>
 #include <cmath>
 #include <cstdio>
+#include <cstdlib>
 
 using namespace std;
 
 void test();
 void teddyBear();
 void toddler();
+
+void calculateStatistics();
 
 struct PersonData {
 	double height;
