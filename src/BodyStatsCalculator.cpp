@@ -1,11 +1,11 @@
 #include "BodyStatsCalculator.h"
 
 BodyStatsCalculator::BodyStatsCalculator() {
-
+	// TODO Auto-generated constructor stub
 }
 
 BodyStatsCalculator::~BodyStatsCalculator() {
-
+	// TODO Auto-generated destructor stub
 }
 
 double BodyStatsCalculator::bodyMassIndex(double height, double weight){

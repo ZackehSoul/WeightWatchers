@@ -3,9 +3,11 @@
 #include "WeightWatchers.h"
 
 WeightWatchers::WeightWatchers(){
+	// TODO Auto-generated constructor stub
 }
 
 WeightWatchers::~WeightWatchers(){
+	// TODO Auto-generated destructor stub
 }
 
 void WeightWatchers::calculateStatistics(){

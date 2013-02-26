@@ -1,8 +1,7 @@
 #ifndef BODYSTATSCALCULATOR_H_
 #define BODYSTATSCALCULATOR_H_
-
-#include <iostream>
 #include <cmath>
+#include <iostream>
 
 using namespace std;
 
