@@ -10,13 +10,13 @@ int main() {
 		cout << "1. Calculate your body statistics\n" << endl;
 		cout << "Your selection: "; cin >> selection;
 
-		while(true){
-			if(selection == 1){
-				system("CLS");
-				pMain->calculateStatistics();
-			} else if(selection > 1){
-				cout << "Please make a valid selection: "; cin >> selection;
-			}
+		validateSelection:
+		if(selection == 1){
+			system("CLS");
+			pMain->calculateStatistics();
+		} else if(selection > 1){
+			cout << "Please make a valid selection: "; cin >> selection;
+			goto validateSelection;
 		}
 	}
 	delete pMain;
