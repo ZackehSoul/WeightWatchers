@@ -38,9 +38,9 @@ double BodyStatsCalculator::twoDecimalPlaces(double x){
 
 string BodyStatsCalculator::getGender(char gender){
 	string clientGender;
-	if (gender == ('M' | 'm')){
+	if (gender == 'M' || gender == 'm'){
 		clientGender = "The client's gender is male.";
-	} else if (gender == ('F' | 'f')){
+	} else if (gender == 'F' || gender == 'f'){
 		clientGender = "The client's gender is female.";
 	}
 	return clientGender;
