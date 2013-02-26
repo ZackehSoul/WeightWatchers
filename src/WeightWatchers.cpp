@@ -45,11 +45,8 @@ void WeightWatchers::calculateStatistics(){
 
 void WeightWatchers::toReturnOrExit(){
 	string selection;
-	cout << "To return to the main menu type \"menu\" or type \"exit\" to exit: "; cin >> selection;
-
-	if(selection == "exit"){
-		WeightWatchers::exitStatus = "exit";
-	}
+	cout << "To return to the main menu type \"menu\" or type \"exit\" to exit: ";
+	cin >> WeightWatchers::exitStatus;
 }
 
 string WeightWatchers::toLowerCase(string &gender)
