@@ -1,24 +1,14 @@
-#include "WeightWatchers.h"
 #include "BodyStatsCalculator.h"
 #include "Member.h"
+#include "WeightWatchers.h"
 
-int main() {
-	int selection;
-	while(exitStatus != "exit"){
-		system("CLS");
-		cout << "Welcome to the Healthy Club Command System." << endl;
-		cout << "Please type the number of the feature you wish to use:\n" << endl;
-		cout << "1. Calculate your body statistics\n" << endl;
-		cout << "Your selection: "; cin >> selection;
-
-		if(selection == 1){
-			system("CLS");
-			calculateStatistics();
-		}
-	}
+WeightWatchers::WeightWatchers(){
 }
 
-void calculateStatistics(){
+WeightWatchers::~WeightWatchers(){
+}
+
+void WeightWatchers::calculateStatistics(){
 	BodyStatsCalculator * pStats = new BodyStatsCalculator();
 	string memberName; double height; double weight; string gender;
 
@@ -51,16 +41,16 @@ void calculateStatistics(){
 	delete pStats;
 }
 
-void toReturnOrExit(){
+void WeightWatchers::toReturnOrExit(){
 	string selection;
 	cout << "To return to the main menu type \"menu\" or type \"exit\" to exit: "; cin >> selection;
 
 	if(selection == "exit"){
-		exitStatus = "exit";
+		WeightWatchers::exitStatus = "exit";
 	}
 }
 
-string toLowerCase(string &gender)
+string WeightWatchers::toLowerCase(string &gender)
 {
 	transform(gender.begin(), gender.end(), gender.begin(), ::tolower);
 	return gender;
