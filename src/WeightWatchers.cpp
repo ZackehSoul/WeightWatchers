@@ -18,23 +18,24 @@ void WeightWatchers::calculateStatistics(){
 	Member member;
 
 	cout << "Please enter your first name: ";
-	validateString(memberName, "name");
+	memberName = validateString(memberName, "name");
 	member.setMemberName(memberName);
 
 	cout << "Please enter your height(cm): ";
-	validateDouble(weight, "weight");
+	height = validateDouble(weight, "weight");
 	member.setHeight(height);
 
 	cout << "Please enter your weight(kg): ";
-	validateDouble(weight, "weight");
+	weight = validateDouble(weight, "weight");
 	member.setWeight(weight);
 
 	cout << "Please enter your gender: ";
-	enterGender:
-	validateString(gender, "gender");
+	gender = validateString(gender, "gender");
 	gender = toLowerCase(gender);
+
+	enterGender:
 	if (gender == "male" || gender == "female" || gender == "f" || gender == "m"){
-	member.setGender(gender);
+		member.setGender(gender);
 	} else {
 		cout << "Please provide a valid gender: ";
 		goto enterGender;
@@ -57,7 +58,7 @@ void WeightWatchers::calculateStatistics(){
 	delete pStats;
 }
 
-void WeightWatchers::validateDouble(double input, string attribute){
+double WeightWatchers::validateDouble(double input, string attribute){
 	while (1) {
 		cin >> input;
 		if (cin.good()){
@@ -68,9 +69,10 @@ void WeightWatchers::validateDouble(double input, string attribute){
 			while (cin.get() != '\n') ;
 		}
 	}
+	return input;
 }
 
-void WeightWatchers::validateString(string input, string attribute){
+string WeightWatchers::validateString(string input, string attribute){
 	while(1){
 		cin >> input;
 		if (find_if(input.begin(), input.end(), ::isdigit) != input.end())
@@ -82,6 +84,7 @@ void WeightWatchers::validateString(string input, string attribute){
 			break;
 		}
 	}
+	return input;
 }
 
 void WeightWatchers::toReturnOrExit(){
