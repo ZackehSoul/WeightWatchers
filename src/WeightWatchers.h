@@ -14,6 +14,8 @@ public:
 	void calculateStatistics();
 	void toReturnOrExit();
 	string toLowerCase(string &);
+	void validateDouble(double, string);
+	void validateString(string, string);
 };
 
 #endif

@@ -7,6 +7,7 @@ using namespace std;
 
 class BodyStatsCalculator {
 private:
+	// Lists only available with c++11 or gnu++11
 	string bodyMassBoundaries[5] = {"underweight.", "of ideal weight.", "slightly overweight.", "overweight.", "obese."};
 	double maleBoundaries[4] = {20.7, 26.4, 27.8, 31.1};
 	double femaleBoundaries[4] = {19.1, 25.8, 27.3, 32.3};
@@ -21,9 +22,5 @@ public:
 	string getBodyMassResults(double bmi, double arr[]);
 	string getGender(string gender);
 };
-
-//static string bodyMassBoundaries[] = {"underweight.", "of ideal weight.", "marginally overweight.", "overweight.", "obese."};
-//static double maleBoundaries[] = {20.7, 26.4, 27.8, 31.1};
-//static double femaleBoundaries[] = {19.1, 25.8, 27.3, 32.3};
 
 #endif

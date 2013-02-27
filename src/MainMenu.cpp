@@ -14,8 +14,10 @@ int main() {
 		if(selection == 1){
 			system("CLS");
 			pMain->calculateStatistics();
-		} else if(selection > 1){
-			cout << "Please make a valid selection: "; cin >> selection;
+		} else {
+			cout << "Please make a valid selection: ";
+			cin.clear(); while (cin.get() != '\n') ;
+			cin >> selection;
 			goto validateSelection;
 		}
 	}

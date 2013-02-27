@@ -16,15 +16,29 @@ void WeightWatchers::calculateStatistics(){
 
 	cout << "Please enter the required information:\n" << endl;
 	Member member;
-	cout << "Please enter your first name: "; cin >> memberName;
-	member.setMemberName(memberName);
-	cout << "Please enter your height(cm): "; cin >> height;
-	member.setHeight(height);
-	cout << "Please enter your weight(kg): "; cin >> weight;
-	member.setWeight(weight);
-	cout << "Please enter your gender: "; cin >> gender; cout << endl;
-	member.setGender(toLowerCase(gender));
 
+	cout << "Please enter your first name: ";
+	validateString(memberName, "name");
+	member.setMemberName(memberName);
+
+	cout << "Please enter your height(cm): ";
+	validateDouble(weight, "weight");
+	member.setHeight(height);
+
+	cout << "Please enter your weight(kg): ";
+	validateDouble(weight, "weight");
+	member.setWeight(weight);
+
+	cout << "Please enter your gender: ";
+	enterGender:
+	validateString(gender, "gender");
+	gender = toLowerCase(gender);
+	if (gender == "male" || gender == "female" || gender == "f" || gender == "m"){
+	member.setGender(gender);
+	} else {
+		cout << "Please provide a valid gender: ";
+		goto enterGender;
+	}
 
 	double bmi = pStats->bodyMassIndex(member.getHeight(), member.getWeight());
 	double bsa = pStats->bodySurfaceArea(member.getHeight(), member.getWeight());
@@ -41,6 +55,33 @@ void WeightWatchers::calculateStatistics(){
 
 	toReturnOrExit();
 	delete pStats;
+}
+
+void WeightWatchers::validateDouble(double input, string attribute){
+	while (1) {
+		cin >> input;
+		if (cin.good()){
+			break;
+		} else {
+			cout << "Please provide a valid number: ";
+			cin.clear();
+			while (cin.get() != '\n') ;
+		}
+	}
+}
+
+void WeightWatchers::validateString(string input, string attribute){
+	while(1){
+		cin >> input;
+		if (find_if(input.begin(), input.end(), ::isdigit) != input.end())
+		{
+			cout << "Please provide a valid " << attribute << ": ";
+			cin.clear();
+			while (cin.get() != '\n') ;
+		} else {
+			break;
+		}
+	}
 }
 
 void WeightWatchers::toReturnOrExit(){
