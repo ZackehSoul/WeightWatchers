@@ -2,7 +2,7 @@
 
 int main() {
 	WeightWatchers * pMain = new WeightWatchers();
-	int selection;
+	int selection; int i = 0;
 	while(pMain->exitStatus != "exit"){
 		system("CLS");
 		cout << "Welcome to the Healthy Club Command System." << endl;
@@ -15,6 +15,7 @@ int main() {
 			system("CLS");
 			pMain->calculateStatistics();
 		} else {
+			if (i == 0) cout << endl, i++;
 			cout << "Please make a valid selection: ";
 			cin.clear(); while (cin.get() != '\n') ;
 			cin >> selection;

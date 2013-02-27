@@ -59,24 +59,29 @@ void WeightWatchers::calculateStatistics(){
 }
 
 double WeightWatchers::validateDouble(double input, string attribute){
+	int i = 0;
 	while (1) {
 		cin >> input;
 		if (cin.good()){
 			break;
 		} else {
+			if (i == 0) cout << endl, i++;
 			cout << "Please provide a valid number: ";
 			cin.clear();
 			while (cin.get() != '\n') ;
+			cout << i;
 		}
 	}
 	return input;
 }
 
 string WeightWatchers::validateString(string input, string attribute){
+	int i = 0;
 	while(1){
 		cin >> input;
 		if (find_if(input.begin(), input.end(), ::isdigit) != input.end())
 		{
+			if (i == 0) cout << endl, i++;
 			cout << "Please provide a valid " << attribute << ": ";
 			cin.clear();
 			while (cin.get() != '\n') ;
