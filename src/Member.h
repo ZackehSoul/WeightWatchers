@@ -6,21 +6,21 @@ using namespace std;
 
 class Member {
 private:
-	string memberName;
-	double height;
-	double weight;
-	string gender;
+	string memberName;	// The user's name
+	double height;		// The user's height
+	double weight;		// The user's weight
+	string gender;		// The user's gender
 public:
 	Member();
 	virtual ~Member();
-	string getMemberName();
-	double getHeight();
-	double getWeight();
-	string getGender();
-	void setMemberName(string);
-	void setHeight(double);
-	void setWeight(double);
-	void setGender(string);
+	string getMemberName();		// Returns the member's name
+	double getHeight();			// Returns the member's height
+	double getWeight();			// Returns the member's weight
+	string getGender();			// Returns the member's gender
+	void setMemberName(string);	// Sets the member's name
+	void setHeight(double);		// Sets the member's height
+	void setWeight(double);		// Sets the member's weight
+	void setGender(string);		// Sets the member's gender
 };
 
 #endif
