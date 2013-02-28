@@ -6,10 +6,13 @@ using namespace std;
 
 class Member {
 private:
-	string memberName;	// The user's name
-	double height;		// The user's height
-	double weight;		// The user's weight
-	string gender;		// The user's gender
+	string memberName;				// The user's name
+	double height;					// The user's height
+	double weight;					// The user's weight
+	string gender;					// The user's gender
+	const string arrivalTime;		// The user's arrival time
+	const string waitingTime;		// The user's waiting time
+	const string transactionTime;	// The user's transaction time
 public:
 	Member();
 	virtual ~Member();

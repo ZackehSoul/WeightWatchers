@@ -5,6 +5,9 @@ Member::Member() {
 	height = 0;
 	weight = 0;
 	gender = "";
+	string arrivalTime = "";
+	string waitingTime = "";
+	string transactionTime = "";
 }
 
 Member::~Member() {
