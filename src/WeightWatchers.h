@@ -7,14 +7,19 @@ using namespace std;
 
 class WeightWatchers{
 private:
+	string exitStatus;
+	string memberName;
+	double height;
+	double weight;
+	string gender;
 public:
 	WeightWatchers();
 	virtual ~WeightWatchers();
-	string exitStatus;
+	string getExitStatus();
 	void calculateStatistics();
 	void toReturnOrExit();
 	string toLowerCase(string &);
-	double validateDouble(double, string);
+	double validateDouble(double);
 	string validateString(string, string);
 };
 
