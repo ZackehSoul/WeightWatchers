@@ -110,7 +110,7 @@ void WeightWatchers::runSimulation(){
 /**
  * Validates the users input to check that it's a double.
  *
- * @double input the users input
+ * @param input the users input
  * @return input the validated input
  */
 double WeightWatchers::validateDouble(double input){
@@ -134,8 +134,8 @@ double WeightWatchers::validateDouble(double input){
 /**
  * Validates the input string to force the user to enter a string without any integers.
  *
- * @string input the users input string
- * @string attribute the attribute the user is setting
+ * @param input the users input string
+ * @param attribute the attribute the user is setting
  * @return input the validated input
  */
 string WeightWatchers::validateString(string input, string attribute){
@@ -168,7 +168,7 @@ void WeightWatchers::toReturnOrExit(){
 /**
  * Converts the input gender to lower case to make for easier handling.
  *
- * @string gender the client's input gender
+ * @param gender the client's input gender
  * @return gender the client's gender in lowercase
  */
 string WeightWatchers::toLowerCase(string &gender)

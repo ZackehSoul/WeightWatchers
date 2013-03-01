@@ -53,7 +53,7 @@ double Member::getWeight(){
 /**
  * Sets the name of the client from the input information.
  *
- * @string name the client's name
+ * @param name the client's name
  */
 void Member::setMemberName(string name){
 	Member::memberName = name;
@@ -62,7 +62,7 @@ void Member::setMemberName(string name){
 /**
  * Sets the gender of the client from the input information.
  *
- * @string gender the client's gender
+ * @param gender the client's gender
  */
 void Member::setGender(string gender){
 	Member::gender = gender;
@@ -71,7 +71,7 @@ void Member::setGender(string gender){
 /**
  * Sets the height of the client from the input information.
  *
- * @double height the client's height
+ * @param height the client's height
  */
 void Member::setHeight(double height){
 	Member::height = height;
@@ -80,7 +80,7 @@ void Member::setHeight(double height){
 /**
  * Sets the weight of the client from the input information.
  *
- * @double weight the client's weight
+ * @param weight the client's weight
  */
 void Member::setWeight(double weight){
 	Member::weight = weight;
