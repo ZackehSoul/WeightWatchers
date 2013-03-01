@@ -1,5 +1,6 @@
 #include "BodyStatsCalculator.h"
 #include "Member.h"
+#include "Trainer.h"
 #include "WeightWatchers.h"
 
 WeightWatchers::WeightWatchers(){
@@ -62,7 +63,7 @@ void WeightWatchers::calculateStatistics(){
 	string bmiResult = pStats->bodyMassResult(bmi, member.getGender());
 
 	// Clear the screen and display the resulting information
-	system("CLS");
+	clearScreen();
 	cout << "These are your calculated statistics:\n" << endl;
 	cout << "Your Body Mass Index is " << bmi << " which indicates that you are " << bmiResult << endl;
 	cout << "Your Body Surface Area is " << bsa << " square metres." << endl;
@@ -72,6 +73,22 @@ void WeightWatchers::calculateStatistics(){
 	// Ask the user if they wish to exit or return to the main menu
 	toReturnOrExit();
 	delete pStats;
+}
+
+void WeightWatchers::runSimulation(){
+	int runTime, serverNo; double transactionTime = 0;
+	BodyStatsCalculator * pStats = new BodyStatsCalculator();
+	Trainer * pTrainer = new Trainer();
+
+	cout << "Please enter the required information:\n" << endl;
+	cout << "Please enter the amount of time you want to run the simulation: "; cin >> runTime;
+	cout << "Please enter the amount of trainers you wish to utilize: "; cin >> serverNo;
+	cout << "Please enter the amount of transaction time you wish to have: ";
+	transactionTime = validateDouble(transactionTime);
+	pTrainer->setTransactionTime(60 * pStats->twoDecimalPlaces(transactionTime));
+	cout << pTrainer->getTransactionTime();
+
+	toReturnOrExit();
 }
 
 /**
@@ -146,4 +163,16 @@ string WeightWatchers::toLowerCase(string &gender)
 
 string WeightWatchers::getExitStatus(){
 	return exitStatus;
+}
+
+/**
+ * Clears the current command windows on either Windows or Linux using an if statement
+ * to avoid any bad practices. Sometimes unsafe, but for this assignment it's appropriate.
+ */
+void WeightWatchers::clearScreen(){
+#ifdef _WIN32 // Detect if user is running windows
+	system("CLS");
+#else // If user isn't running Windows (most likely running UNIX)
+	system("clear");
+#endif
 }

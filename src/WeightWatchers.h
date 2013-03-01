@@ -21,6 +21,8 @@ public:
 	string toLowerCase(string &);			// Converts strings to lower case
 	double validateDouble(double);			// Validates input doubles
 	string validateString(string, string);	// Validates input strings
+	void clearScreen();						// Clears the terminal window for different OS
+	void runSimulation();
 };
 
 #endif
