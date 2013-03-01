@@ -75,19 +75,35 @@ void WeightWatchers::calculateStatistics(){
 	delete pStats;
 }
 
+/**
+ * Runs the client server simulation after retrieving the desired inputs from the users. Also
+ * displays how long the server is going to run from and what the current time is. Asks the
+ * user if they want to return to the main menu after running.
+ */
 void WeightWatchers::runSimulation(){
 	int runTime, serverNo; double transactionTime = 0;
 	BodyStatsCalculator * pStats = new BodyStatsCalculator();
 	Trainer * pTrainer = new Trainer();
 
 	cout << "Please enter the required information:\n" << endl;
-	cout << "Please enter the amount of time you want to run the simulation: "; cin >> runTime;
+	cout << "Please enter the amount of time you want to run the simulation(min): "; cin >> runTime;
 	cout << "Please enter the amount of trainers you wish to utilize: "; cin >> serverNo;
-	cout << "Please enter the amount of transaction time you wish to have: ";
+	cout << "Please enter the amount of transaction time you wish to have(hours): ";
 	transactionTime = validateDouble(transactionTime);
 	pTrainer->setTransactionTime(60 * pStats->twoDecimalPlaces(transactionTime));
-	cout << pTrainer->getTransactionTime();
 
+	clearScreen();
+	cout << "The time is now " << pTrainer->currentTime() << "." << endl;
+	cout << "The server will run for " << (runTime / 60) % 24 << " hour";
+	if(((runTime / 60) % 24) != 1){
+		cout << "s";
+	}
+	if((runTime % 60) != 0){
+		cout << " and " << runTime % 60  << " minutes.\n" << endl;
+	} else {
+		cout << ".\n" << endl;
+	}
+	pTrainer->getTransactionTime();
 	toReturnOrExit();
 }
 

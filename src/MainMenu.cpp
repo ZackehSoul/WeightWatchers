@@ -13,7 +13,6 @@ int main() {
 	WeightWatchers * pMain = new WeightWatchers();
 	// Set the variables needed by the menu
 	int selection; int i = 0;
-
 	// Create a loop which is ended by the user
 	while(pMain->getExitStatus() != "exit"){
 		// Clear the screen and display opening information
@@ -31,6 +30,7 @@ int main() {
 			pMain->clearScreen();
 			pMain->calculateStatistics();
 		} else if (selection == 2){
+			// Clear the screen and initialize the simulation
 			pMain->clearScreen();
 			pMain->runSimulation();
 		} else {
