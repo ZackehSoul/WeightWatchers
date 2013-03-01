@@ -22,7 +22,7 @@ public:
 	double validateDouble(double);			// Validates input doubles
 	string validateString(string, string);	// Validates input strings
 	void clearScreen();						// Clears the terminal window for different OS
-	void runSimulation();
+	void runSimulation();					// Runs the simulation
 };
 
 #endif
