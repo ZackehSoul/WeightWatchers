@@ -1,10 +1,9 @@
 #include "Trainer.h"
 
 Trainer::Trainer() {
-	isBusy = true;
+	isBusy = false;
 	memberName = "";
 	transactionTime = 0;
-	decrementCounter = 0;
 }
 
 Trainer::~Trainer() {
@@ -20,16 +19,19 @@ bool Trainer::isTrainerBusy(){
 }
 
 const string Trainer::currentTime() {
-	time_t     now = time(0);
-	struct tm  tstruct;
-	char       buf[80];
+	time_t now = time(0);
+	struct tm tstruct;
+	char time[80];
 	tstruct = *localtime(&now);
-	strftime(buf, sizeof(buf), "%R", &tstruct);
-	return buf;
+	strftime(time, sizeof(time), "%H%M", &tstruct);
+	return time;
 }
 
-int Trainer::setTransactionTime(int hour, int minutes){
-	transactionTime = (hour * 3600) + (minutes * 60);
+void Trainer::setTransactionTime(int minutes){
+	transactionTime = minutes * 60;
+}
+
+int Trainer::getTransactionTime(){
 	return transactionTime;
 }
 
@@ -44,6 +46,7 @@ void Trainer::decrementTime(int seconds){
 void Trainer::setStatus(string status){
 	if(status == "true"){
 		isBusy = true;
+		decrementTime(transactionTime);
 	} else if (status == "false"){
 		isBusy = false;
 	}
