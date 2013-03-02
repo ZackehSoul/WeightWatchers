@@ -33,6 +33,8 @@ int main() {
 			// Clear the screen and initialize the simulation
 			pMain->clearScreen();
 			pMain->runSimulation();
+		} else if (selection == 0000){
+			// Test function
 		} else {
 			// Show the error and ask for a valid selection
 			if (i == 0) cout << endl, i++;
