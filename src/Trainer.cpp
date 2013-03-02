@@ -74,8 +74,7 @@ string Trainer::doubleDigits(int input){
 		// Else just add input
 		newInput << input;
 	}
-	string digits = newInput.str();	// Convert stringstream to string
-	return digits;
+	return newInput.str(); // Convert stringstream to string
 }
 
 /**

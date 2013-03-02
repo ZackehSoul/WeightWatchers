@@ -22,7 +22,7 @@ public:
 	void setTransactionTime(int seconds);	// Sets the transaction time
 	string getStatus();						// Returns if the trainer is busy
 	void getTransactionTime();				// Returns the transaction time (for test purposes)
-	string doubleDigits(int);					// Forces ints to double digits
+	string doubleDigits(int);				// Forces ints to double digits
 };
 
 #endif
