@@ -23,6 +23,7 @@ public:
 	string validateString(string, string);	// Validates input strings
 	void clearScreen();						// Clears the terminal window for different OS
 	void runSimulation();					// Runs the simulation
+	void setExitStatus(string);
 };
 
 #endif

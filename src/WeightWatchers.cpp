@@ -181,6 +181,10 @@ string WeightWatchers::getExitStatus(){
 	return exitStatus;
 }
 
+void WeightWatchers::setExitStatus(string string){
+	exitStatus = string;
+}
+
 /**
  * Clears the current command windows on either Windows or Linux using an if statement
  * to avoid any bad practices. Sometimes unsafe, but for this assignment it's appropriate.

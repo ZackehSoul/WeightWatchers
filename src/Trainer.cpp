@@ -85,7 +85,7 @@ string Trainer::doubleDigits(int input){
  */
 void Trainer::decrementTime(int seconds){
 	// While the user has some time left, decrement in intervals of a second
-	while(seconds != 0){
+	while(seconds > 0){
 		seconds--;
 		Sleep(1000);
 	}
@@ -103,8 +103,10 @@ void Trainer::setStatus(string status){
 	// If a trainer becomes busy, start decrementing the transaction time
 	if(status == "busy"){
 		isBusy = true;
-		decrementTime(transactionTime);
-	} else if (status != "busy"){
+		//decrementTime(transactionTime);
+		thread myThread = thread(boost::bind(&Trainer::decrementTime, this, transactionTime));
+		myThread.join();
+	} else {
 		isBusy = false;
 	}
 }

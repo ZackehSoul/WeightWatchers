@@ -3,6 +3,7 @@
 #include <ctime>
 #include <iostream>
 #include "Member.h"
+#include <mingw_thread_fix.h>		// Fix to redirect std::thread to boost::thread
 #include <sstream>
 #include <windows.h>
 

@@ -11,6 +11,7 @@
  */
 int main() {
 	WeightWatchers * pMain = new WeightWatchers();
+	Trainer * pTrain = new Trainer();
 	// Set the variables needed by the menu
 	int selection; int i = 0;
 	// Create a loop which is ended by the user
@@ -35,6 +36,11 @@ int main() {
 			pMain->runSimulation();
 		} else if (selection == 0000){
 			// Test function
+			pTrain->setStatus("busy");
+			while (pTrain->getStatus() != "This trainer is busy."){
+				// continue
+			}
+			pMain->setExitStatus("exit");
 		} else {
 			// Show the error and ask for a valid selection
 			if (i == 0) cout << endl, i++;
