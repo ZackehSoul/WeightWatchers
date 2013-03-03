@@ -103,7 +103,7 @@ void WeightWatchers::runSimulation(){
 	} else {
 		cout << ".\n" << endl;
 	}
-	pTrainer->getTransactionTime();
+	pTrainer->printTransactionTime();
 	toReturnOrExit();
 }
 
