@@ -4,6 +4,7 @@
 Trainer::Trainer() {
 	isBusy = false;
 	memberName = "";
+	trainerID = 0;
 	transactionTime = 0;
 }
 
@@ -44,9 +45,9 @@ const string Trainer::currentTime() {
  *
  * @param minutes the amount of minutes
  */
-void Trainer::setTransactionTime(int minutes){
+void Trainer::setTransactionTime(double hours){
 	// Stores transaction time as seconds
-	transactionTime = minutes * 60;
+	transactionTime = hours * 60 * 60;
 }
 
 /**
@@ -63,27 +64,37 @@ int Trainer::getTransactionTime(){
  * transaction time stored in seconds to the HH:MM:SS format.
  */
 void Trainer::printTransactionTime(){
-	cout << doubleDigits(((transactionTime / 60 / 60) % 24)); cout << ":";
-	cout << doubleDigits(((transactionTime / 60) % 60)); cout << ":";
-	cout << doubleDigits((transactionTime % 60)) << endl;
+	cout << leadingZeros(((transactionTime / 60 / 60) % 24), 2); cout << ":";
+	cout << leadingZeros(((transactionTime / 60) % 60), 2); cout << ":";
+	cout << leadingZeros((transactionTime % 60), 2) << endl;
 }
 
 /**
- * Forces an int to double digits if necessary and returns it as a string.
+ * Forces an integer to a given number of digits if necessary and returns it as a string.
  *
  * @param input the input digits
- * @return digits the digits
+ * @param digitAmount the amount of desired digits
+ * @return output the new number
  */
-string Trainer::doubleDigits(int input){
-	stringstream newInput;
-	// If input is a single digit, add a leading 0 to input
-	if((input < 10)){
-		newInput << "0" << input;
-	} else {
-		// Else just add input
-		newInput << input;
+string Trainer::leadingZeros(int input, int digitAmount){
+	string output; stringstream ss;
+	ss << input;
+	if(digitAmount == 3){
+		if(input < 10){
+			output = "00" + ss.str();
+		} else if (input >= 10 && input < 100){
+			output = "0" + ss.str();
+		} else {
+			output = ss.str();
+		}
+	} else if (digitAmount == 2){
+		if(input < 10){
+			output = "0" + ss.str();
+		} else {
+			output = ss.str();
+		}
 	}
-	return newInput.str(); // Convert stringstream to string
+	return output;
 }
 
 /**
@@ -92,12 +103,12 @@ string Trainer::doubleDigits(int input){
  *
  * @param seconds the transaction time in seconds
  */
-void Trainer::decrementTime(int seconds){
+void Trainer::decrementTime(){
 	// While the user has some time left, decrement in intervals of a second
-	while(seconds > 0){
-		seconds--;
-		cout << seconds << endl; // For testing decrementing
-		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	while(transactionTime > 0){
+		transactionTime--;
+		cout << transactionTime << endl; // For testing decrementing
+		this_thread::sleep_for(chrono::milliseconds(1000));
 	}
 	// When the user has no time remaining, the trainer becomes available
 	isBusy = false;
@@ -131,4 +142,23 @@ string Trainer::getStatus(){
 		status = "This trainer is free.";
 	}
 	return status;
+}
+
+/**
+ * Sets the trainer's ID number
+ *
+ * @param ID the trainer's ID number
+ */
+void Trainer::setTrainerID(int ID){
+	trainerID = ID;
+}
+
+/**
+ * Returns trainer ID as a three digit integer
+ *
+ * @return ID the trainer's ID number
+ */
+string Trainer::getTrainerID(){
+	string ID = leadingZeros(trainerID, 3);
+	return ID;
 }

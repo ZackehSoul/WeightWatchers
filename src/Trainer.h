@@ -13,18 +13,21 @@ private:
 	string memberName;				// The trainer's allocated client
 	int transactionTime;			// The trainer's transaction time
 	Member client;					// The client associated with the trainer
+	int trainerID;					// The trainer's ID number
 public:
 	Trainer();
 	virtual ~Trainer();
 	bool isTrainerBusy();					// Returns the trainer's status
 	void setStatus(string);					// Sets the trainer's status
 	const string currentTime();				// Returns the current time
-	void decrementTime(int);				// Decrements the transaction time
-	void setTransactionTime(int seconds);	// Sets the transaction time
+	void decrementTime();					// Decrements the transaction time
+	void setTransactionTime(double hours);	// Sets the transaction time
 	string getStatus();						// Returns if the trainer is busy
-	void printTransactionTime();				// Returns the transaction time (for test purposes)
+	void printTransactionTime();			// Returns the transaction time (for test purposes)
 	int getTransactionTime();				// Returns the transaction time as an integer
-	string doubleDigits(int);				// Forces integers to double digits
+	string leadingZeros(int, int);			// Forces integers to a given digit amount
+	void setTrainerID(int);					// Sets an ID number for each trainer
+	string getTrainerID();					// Gets the ID number to 3 digits
 };
 
 #endif
