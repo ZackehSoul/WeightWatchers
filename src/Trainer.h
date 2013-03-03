@@ -1,11 +1,11 @@
 #ifndef TRAINER_H_
 #define TRAINER_H_
+#include <chrono>
 #include <ctime>
 #include <iostream>
 #include "Member.h"
-#include <mingw_thread_fix.h>		// Fix to redirect std::thread to boost::thread
 #include <sstream>
-#include <windows.h>
+#include <thread>					// Support for concurrent programming, experimental
 
 class Trainer {
 private:
@@ -22,8 +22,9 @@ public:
 	void decrementTime(int);				// Decrements the transaction time
 	void setTransactionTime(int seconds);	// Sets the transaction time
 	string getStatus();						// Returns if the trainer is busy
-	void getTransactionTime();				// Returns the transaction time (for test purposes)
-	string doubleDigits(int);				// Forces ints to double digits
+	void printTransactionTime();				// Returns the transaction time (for test purposes)
+	int getTransactionTime();				// Returns the transaction time as an integer
+	string doubleDigits(int);				// Forces integers to double digits
 };
 
 #endif

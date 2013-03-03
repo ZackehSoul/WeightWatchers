@@ -50,10 +50,19 @@ void Trainer::setTransactionTime(int minutes){
 }
 
 /**
+ * Returns transaction time as an integer.
+ *
+ * @return transaction time the transaction time
+ */
+int Trainer::getTransactionTime(){
+	return transactionTime;
+}
+
+/**
  * Prints out the transaction time remaining for a trainer's session. Converts the
  * transaction time stored in seconds to the HH:MM:SS format.
  */
-void Trainer::getTransactionTime(){
+void Trainer::printTransactionTime(){
 	cout << doubleDigits(((transactionTime / 60 / 60) % 24)); cout << ":";
 	cout << doubleDigits(((transactionTime / 60) % 60)); cout << ":";
 	cout << doubleDigits((transactionTime % 60)) << endl;
@@ -87,7 +96,8 @@ void Trainer::decrementTime(int seconds){
 	// While the user has some time left, decrement in intervals of a second
 	while(seconds > 0){
 		seconds--;
-		Sleep(1000);
+		cout << seconds << endl; // For testing decrementing
+		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	}
 	// When the user has no time remaining, the trainer becomes available
 	isBusy = false;
@@ -103,9 +113,6 @@ void Trainer::setStatus(string status){
 	// If a trainer becomes busy, start decrementing the transaction time
 	if(status == "busy"){
 		isBusy = true;
-		//decrementTime(transactionTime);
-		thread myThread = thread(boost::bind(&Trainer::decrementTime, this, transactionTime));
-		myThread.join();
 	} else {
 		isBusy = false;
 	}
