@@ -9,6 +9,7 @@ WeightWatchers::WeightWatchers(){
 	height = 0;
 	weight = 0;
 	gender = "";
+	runTime = 0;
 }
 
 WeightWatchers::~WeightWatchers(){
@@ -81,30 +82,73 @@ void WeightWatchers::calculateStatistics(){
  * user if they want to return to the main menu after running.
  */
 void WeightWatchers::runSimulation(){
-	int runTime, serverNo; double transactionTime = 0;
+	int trainerNo; double transactionTime = 0;
 	BodyStatsCalculator * pStats = new BodyStatsCalculator();
 	Trainer * pTrainer = new Trainer();
 
+	// Display the opening information in the cleared screen
 	cout << "Please enter the required information:\n" << endl;
 	cout << "Please enter the amount of time you want to run the simulation(min): "; cin >> runTime;
-	cout << "Please enter the amount of trainers you wish to utilize: "; cin >> serverNo;
+	cout << "Please enter the amount of trainers you wish to utilize: "; cin >> trainerNo;
 	cout << "Please enter the amount of transaction time you wish to have(hours): ";
+	// Input and validate transaction time
 	transactionTime = validateDouble(transactionTime);
+	// Convert to minutes
 	pTrainer->setTransactionTime(60 * pStats->twoDecimalPlaces(transactionTime));
 
+	// Because the following thread decrement runTime, we need a variable to remember the original
+	int runningTime = runTime;
+	// Create new thread to track the run time of the simulation
+	thread simRunTime(&WeightWatchers::simulationRunTime, this);
+	// Detach thread so it can run independantly
+	simRunTime.detach();
+
+	// Clear screen and display current time and how long simulation will run
 	clearScreen();
 	cout << "The time is now " << pTrainer->currentTime() << "." << endl;
-	cout << "The server will run for " << (runTime / 60) % 24 << " hour";
-	if(((runTime / 60) % 24) != 1){
+	cout << "The server will run for " << (runningTime / 60) % 24 << " hour";
+	// If the server runs for over an hour, append "s" to hour
+	if(((runningTime / 60) % 24) != 1){
 		cout << "s";
 	}
-	if((runTime % 60) != 0){
-		cout << " and " << runTime % 60  << " minutes.\n" << endl;
+	// If the server runs for X hours and minutes > 0 append " and X minute(s)"
+	if((runningTime % 60) != 0){
+		cout << " and ";
+		if(runningTime % 60 != 1){
+			// If it's not a minute, append " minutes."
+			cout << runningTime % 60 << " minutes.\n" << endl;
+		} else {
+			// If it's a single minute, append " minute."
+			cout << runningTime % 60 << " minute.\n" << endl;
+		}
 	} else {
+		// Else just print a new line
 		cout << ".\n" << endl;
 	}
-	pTrainer->printTransactionTime();
+
+	// Create array of trainer objects based on user input
+	Trainer trainers[trainerNo];
+	for(int i = 0; i <= trainerNo; i++){
+		// Give all trainers an ID number
+		trainers[i].setTrainerID(i + 1);
+	}
 	toReturnOrExit();
+}
+
+/**
+ * Tracks the allocated run time of the simulation and exits when the time is up.
+ */
+void WeightWatchers::simulationRunTime(){
+	// Converts the run time to seconds, easier to handle
+	runTime = runTime * 60;
+	while(runTime > 0){
+		// Decrement the runTime remaining
+		runTime--;
+		// Sleep for a second
+		this_thread::sleep_for(chrono::milliseconds(1000));
+	}
+	// Exit the program when the session time is over
+	std::exit(0);
 }
 
 /**
@@ -171,16 +215,24 @@ void WeightWatchers::toReturnOrExit(){
  * @param gender the client's input gender
  * @return gender the client's gender in lowercase
  */
-string WeightWatchers::toLowerCase(string &gender)
-{
+string WeightWatchers::toLowerCase(string &gender){
 	transform(gender.begin(), gender.end(), gender.begin(), ::tolower);
 	return gender;
 }
 
+/**
+ * Returns the current exit status of the program.
+ */
 string WeightWatchers::getExitStatus(){
 	return exitStatus;
 }
 
+/**
+ * Allows setting of the exit status to allow the closing of the program.
+ * Used as a way for the user to terminate as opposed to forced closure.
+ *
+ * @param string the exit status
+ */
 void WeightWatchers::setExitStatus(string string){
 	exitStatus = string;
 }
