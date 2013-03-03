@@ -41,13 +41,14 @@ int main() {
 			// Testing concurrency - Needs MinGW-Builds POSIX in order to work
 			Trainer trainer;
 			trainer.setStatus("busy");
-			trainer.setTransactionTime(1);
-			thread t(&Trainer::decrementTime, &trainer, trainer.getTransactionTime());
+			// Test of a minute, due to transaction time being stored as hours
+			trainer.setTransactionTime(0.016666666666666666666666666666666666666666666666);
+			thread t(&Trainer::decrementTime, &trainer);
+			t.detach();
 			while (trainer.isTrainerBusy()){
-				cout << trainer.getStatus();
+				cout << trainer.getStatus() << endl;;
 				Sleep(1000);
 			}
-			t.join();
 			pMain->setExitStatus("exit");
 			//--- Test function --//
 		} else {
