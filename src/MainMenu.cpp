@@ -1,5 +1,8 @@
-#include "Trainer.h"
 #include "WeightWatchers.h"
+//--- Testing ---//
+#include "Trainer.h"
+#include <windows.h>
+//--- Testing ---//
 
 /**
  * Main method for the Healthy Club system. Provides a menu to the user to decide
@@ -11,7 +14,6 @@
  */
 int main() {
 	WeightWatchers * pMain = new WeightWatchers();
-	Trainer * pTrain = new Trainer();
 	// Set the variables needed by the menu
 	int selection; int i = 0;
 	// Create a loop which is ended by the user
@@ -35,12 +37,19 @@ int main() {
 			pMain->clearScreen();
 			pMain->runSimulation();
 		} else if (selection == 0000){
-			// Test function
-			pTrain->setStatus("busy");
-			while (pTrain->getStatus() != "This trainer is busy."){
-				// continue
+			//--- Test function --//
+			// Testing concurrency - Needs MinGW-Builds POSIX in order to work
+			Trainer trainer;
+			trainer.setStatus("busy");
+			trainer.setTransactionTime(1);
+			thread t(&Trainer::decrementTime, &trainer, trainer.getTransactionTime());
+			while (trainer.isTrainerBusy()){
+				cout << trainer.getStatus();
+				Sleep(1000);
 			}
+			t.join();
 			pMain->setExitStatus("exit");
+			//--- Test function --//
 		} else {
 			// Show the error and ask for a valid selection
 			if (i == 0) cout << endl, i++;
