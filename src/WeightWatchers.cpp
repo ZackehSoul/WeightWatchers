@@ -10,6 +10,7 @@ WeightWatchers::WeightWatchers(){
 	weight = 0;
 	gender = "";
 	runTime = 0;
+	isSimRunning = false;
 }
 
 WeightWatchers::~WeightWatchers(){
@@ -96,11 +97,13 @@ void WeightWatchers::runSimulation(){
 	// Convert to minutes
 	pTrainer->setTransactionTime(60 * pStats->twoDecimalPlaces(transactionTime));
 
-	// Because the following thread decrement runTime, we need a variable to remember the original
+	// Because the following thread decrements runTime, we need a variable to remember the original
 	int runningTime = runTime;
+	// The simulation is now running, so set the boolean to true to enable the thread
+	isSimRunning = true;
 	// Create new thread to track the run time of the simulation
 	thread simRunTime(&WeightWatchers::simulationRunTime, this);
-	// Detach thread so it can run independantly
+	// Detach thread so it can run independently
 	simRunTime.detach();
 
 	// Clear screen and display current time and how long simulation will run
@@ -138,6 +141,9 @@ void WeightWatchers::runSimulation(){
 		// Give all trainers an ID number
 		trainers[i].setTrainerID(i + 1);
 	}
+
+	// The simulation has ended, so set the boolean to false to kill the thread
+	isSimRunning = false;
 	toReturnOrExit();
 }
 
@@ -147,12 +153,17 @@ void WeightWatchers::runSimulation(){
 void WeightWatchers::simulationRunTime(){
 	// Converts the run time to seconds, easier to handle
 	runTime = (runTime * 60) - 10;
-	while(runTime > 0){
+	// If the simulation is still running and it has remaining running time
+	while(runTime > 0 && isSimRunning){
 		// Decrement the runTime remaining
 		runTime--;
 		// Sleep for a second
 		this_thread::sleep_for(chrono::milliseconds(1000));
+		cout << runTime << endl;
 	}
+	// If the simulation has been closed, end this thread
+	if(!isSimRunning) return;
+	// If the simulation is still running, display termination notice
 	cout << "\nYour session is about to expire...  ";
 	for(int i = 10; i > 0; i--){
 		if(i == 10) cout << "\b" << i;

@@ -14,6 +14,7 @@ private:
 	double weight;		// The user's weight
 	string gender;		// The user's gender
 	int runTime;		// The allocated run time of the simulation
+	bool isSimRunning;	// If the simulation is running
 public:
 	WeightWatchers();
 	virtual ~WeightWatchers();
