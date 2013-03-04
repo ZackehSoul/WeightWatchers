@@ -106,20 +106,26 @@ void WeightWatchers::runSimulation(){
 	// Clear screen and display current time and how long simulation will run
 	clearScreen();
 	cout << "The time is now " << pTrainer->currentTime() << "." << endl;
-	cout << "The server will run for " << (runningTime / 60) % 24 << " hour";
-	// If the server runs for over an hour, append "s" to hour
-	if(((runningTime / 60) % 24) != 1){
-		cout << "s";
+	cout << "The server will continue to run for ";
+	// Formats the remaining server time correctly
+	if(((runningTime / 60) % 24) != 0){
+		// If the server runs for an hour and X minutes print an hour
+		if (((runningTime / 60) % 24) == 1) cout << "an hour";
+		// Else print X hours
+		else cout << (runningTime / 60) % 24 << " hours";
 	}
 	// If the server runs for X hours and minutes > 0 append " and X minute(s)"
 	if((runningTime % 60) != 0){
-		cout << " and ";
+		// If there is an hour specified print and
+		if(((runningTime / 60) % 24) != 0){
+			cout << " and ";
+		}
 		if(runningTime % 60 != 1){
 			// If it's not a minute, append " minutes."
 			cout << runningTime % 60 << " minutes.\n" << endl;
 		} else {
-			// If it's a single minute, append " minute."
-			cout << runningTime % 60 << " minute.\n" << endl;
+			// If it's a single minute, print a minute
+			cout << "a minute.\n" << endl;
 		}
 	} else {
 		// Else just print a new line
@@ -140,11 +146,17 @@ void WeightWatchers::runSimulation(){
  */
 void WeightWatchers::simulationRunTime(){
 	// Converts the run time to seconds, easier to handle
-	runTime = runTime * 60;
+	runTime = (runTime * 60) - 10;
 	while(runTime > 0){
 		// Decrement the runTime remaining
 		runTime--;
 		// Sleep for a second
+		this_thread::sleep_for(chrono::milliseconds(1000));
+	}
+	cout << "\nYour session is about to expire...  ";
+	for(int i = 10; i > 0; i--){
+		if(i == 10) cout << "\b" << i;
+		else cout << "\b\b" << 0 << i;
 		this_thread::sleep_for(chrono::milliseconds(1000));
 	}
 	// Exit the program when the session time is over
