@@ -37,20 +37,18 @@ int main() {
 			pMain->clearScreen();
 			pMain->runSimulation();
 		} else if (selection == 0000){
-			//--- Test function --//
+			//--- Test function ---//
 			// Testing concurrency - Needs MinGW-Builds POSIX in order to work
 			Trainer trainer;
-			trainer.setStatus("busy");
 			// Test of a minute, due to transaction time being stored as hours
 			trainer.setTransactionTime(0.016666666666666666666666666666666666666666666666);
-			thread t(&Trainer::decrementTime, &trainer);
-			t.detach();
+			trainer.setStatus("busy");
 			while (trainer.isTrainerBusy()){
 				cout << trainer.getStatus() << endl;;
 				Sleep(1000);
 			}
 			pMain->setExitStatus("exit");
-			//--- Test function --//
+			//--- Test function ---//
 		} else {
 			// Show the error and ask for a valid selection
 			if (i == 0) cout << endl, i++;

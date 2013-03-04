@@ -124,6 +124,8 @@ void Trainer::setStatus(string status){
 	// If a trainer becomes busy, start decrementing the transaction time
 	if(status == "busy"){
 		isBusy = true;
+		thread decrementation(&Trainer::decrementTime, this);
+		decrementation.detach();
 	} else {
 		isBusy = false;
 	}
