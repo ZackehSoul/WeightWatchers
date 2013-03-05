@@ -33,7 +33,7 @@ const string Trainer::currentTime() {
 	time_t now = time(0);
 	struct tm tstruct;
 	char time[80];
-	// Initializes struct with the localtime
+	// Initializes structure with the local time
 	tstruct = *localtime(&now);
 	// Returns time in the format HH:MM:SS
 	strftime(time, sizeof(time), "%X", &tstruct);
@@ -78,15 +78,21 @@ void Trainer::printTransactionTime(){
  */
 string Trainer::leadingZeros(int input, int digitAmount){
 	string output; stringstream ss;
+	// Add the input to the stringstream
 	ss << input;
+	// If the user desires three digits
 	if(digitAmount == 3){
+		// If input is a single digit number it needs two zeros
 		if(input < 10){
 			output = "00" + ss.str();
+		// If it's a two digit number, it needs one zero
 		} else if (input >= 10 && input < 100){
 			output = "0" + ss.str();
+		// If it's already a three digit number or higher, leave it alone
 		} else {
 			output = ss.str();
 		}
+	// Same concept as above
 	} else if (digitAmount == 2){
 		if(input < 10){
 			output = "0" + ss.str();
@@ -94,7 +100,7 @@ string Trainer::leadingZeros(int input, int digitAmount){
 			output = ss.str();
 		}
 	}
-	return output;
+	return output; // Returns the output number
 }
 
 /**
