@@ -1,5 +1,6 @@
 #include "WeightWatchers.h"
 //--- Testing ---//
+#include "LinkedList.h"
 #include "Trainer.h"
 #include <windows.h>
 //--- Testing ---//
@@ -38,16 +39,30 @@ int main() {
 			pMain->runSimulation();
 		} else if (selection == 0000){
 			//--- Test function ---//
-			// Testing concurrency - Needs MinGW-Builds POSIX in order to work
-			Trainer trainer;
-			// Test of a minute, due to transaction time being stored as hours
-			trainer.setTransactionTime(0.016666666666666666666666666666666666666666666666);
-			trainer.setStatus("busy");
-			while (trainer.isTrainerBusy()){
-				cout << trainer.getStatus() << endl;;
-				Sleep(1000);
+			int trainerNo;
+			// Asks for the number of trainers
+			cout << "Please enter an amount of trainers: "; cin >> trainerNo;
+			// Creates that amount of trainer objects
+			Trainer trainers[trainerNo];
+			LinkedList pList;
+			for(int i = 0; i < trainerNo; i++){
+				// Give all trainers an ID number
+				trainers[i].setTrainerID(i + 1);
+				// Add them to the linked list
+				pList.addTrainerElement(&trainers[i]);
 			}
-			pMain->setExitStatus("exit");
+			// Check if they added to the list correctly
+			cout << pList.listElements() << endl;
+			int busyNess;
+			// Make some of them busy
+			cout << "Please enter the amount you want to make busy: "; cin >> busyNess;
+			for(int i = 0; i < busyNess; i++){
+				// Remove the busy trainers from the list
+				pList.removeTrainerElement();
+			}
+			// Check they removed correctly
+			cout << pList.listElements();
+			Sleep(10000);
 			//--- Test function ---//
 		} else {
 			// Show the error and ask for a valid selection
