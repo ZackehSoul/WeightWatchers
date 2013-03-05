@@ -4,13 +4,13 @@
 #include "WeightWatchers.h"
 
 WeightWatchers::WeightWatchers(){
-	exitStatus = "";
-	memberName = "";
-	height = 0;
-	weight = 0;
-	gender = "";
-	runTime = 0;
-	isSimRunning = false;
+	exitStatus = "";		// Exit status isn't set because user hasn't selected action
+	memberName = "";		// Member Name isn't set until user inputs data
+	height = 0;				// Height isn't set until user inputs data
+	weight = 0;				// Weight isn't set until user inputs data
+	gender = "";			// Gender isn't set until user inputs data
+	runTime = 0;			// RunTime isn't set until user inputs data
+	isSimRunning = false;	// Simulation isn't always running when this class is created
 }
 
 WeightWatchers::~WeightWatchers(){
