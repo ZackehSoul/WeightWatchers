@@ -1,9 +1,5 @@
 #include "WeightWatchers.h"
 //--- Testing ---//
-#include <fstream>
-#include "LinkedList.h"
-#include "Trainer.h"
-#include <windows.h>
 //--- Testing ---//
 
 /**
@@ -27,18 +23,25 @@ int main() {
 		cout << "Please type in your last name: "; cin >> lastName;
 		cout << "Please type in your gender: "; cin >> gender;
 
+		// Clear the screen
 		pMain->clearScreen();
+		// Open the members file
 		ifstream memberFile("resources/" + firstName + " " + lastName + ".txt");
 		ofstream members;
+		// If they already have a file, display this
 		if(memberFile){
 			cout << "Welcome back, " << firstName << "." << endl;
 		} else {
+			// If they haven't, create their new file
 			ofstream createFile("resources/" + firstName + " " + lastName + ".txt");
+			// Also add them to the members list
 			members.open("members.txt", ios_base::app);
 			members << firstName << " " << lastName << endl;
+			// Close the stream and welcome them to the club
 			members.close();
 			cout << "Welcome to the club, " << firstName << "." << endl;
 		}
+		// Display the next screen
 		cout << "Please type the number of the feature you wish to use:\n" << endl;
 		cout << "1. Start the Client Server simulation" << endl;
 		cout << "2. Calculate your body statistics\n" << endl;
@@ -56,20 +59,6 @@ int main() {
 			pMain->calculateStatistics(firstName + " " + lastName, gender);
 		} else if (selection == 0000){
 			//--- Test function ---//
-			vector<string> lines;
-			ifstream myfile("members.txt");
-			if(myfile.is_open()){
-				string line;
-				while(getline(myfile, line))
-				{
-					lines.push_back(line);
-				}
-			}
-			for(unsigned int i = 0; i < lines.size(); i++){
-				cout << lines.at(i) << endl;
-			}
-			cout << lines.size();
-			Sleep(60000);
 			//--- Test function ---//
 		} else {
 			// Show the error and ask for a valid selection
