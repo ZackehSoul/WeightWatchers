@@ -94,7 +94,9 @@ void WeightWatchers::runSimulation(){
 	for(int i = 0; i <= trainerNo; i++){
 		// Give all trainers an ID number
 		trainers[i].setTrainerID(i + 1);
+		// Set their transaction time
 		trainers[i].setTransactionTime(pStats->twoDecimalPlaces(transactionTime));
+		// Add them to the trainer queue
 		trainerList.addTrainerElement(&trainers[i]);
 	}
 
@@ -109,7 +111,7 @@ void WeightWatchers::runSimulation(){
 
 	// Clear screen and display current time and how long simulation will run
 	clearScreen();
-	cout << "The time is now " << trainers[1].currentTime() << "." << endl;
+	cout << "The time is now " << currentTime() << "." << endl;
 	cout << "The server will continue to run for ";
 	// Formats the remaining server time correctly
 	if(((runningTime / 60) % 24) != 0){
@@ -144,7 +146,9 @@ void WeightWatchers::runSimulation(){
 	thread visitorAssignment(&WeightWatchers::serveMembers, this);
 	visitorAssignment.detach();
 
-	// Ask if the user wants to exit or continue
+	// Just to freeze the menu so you can observe the simulation
+	string string; cin >> string;
+	// Enter the blank input above to have the ability to return to the main page
 	toReturnOrExit();
 }
 
@@ -153,6 +157,7 @@ void WeightWatchers::runSimulation(){
  * occurs when both lists aren't empty.
  */
 void WeightWatchers::serveMembers(){
+	int i = 0;
 	// If the simulation is running, the queue is moving
 	while(isSimRunning){
 		// If there is both a trainer and a member waiting, the member becomes assigned
@@ -161,10 +166,13 @@ void WeightWatchers::serveMembers(){
 			memberList.removeMemberElement();
 			// They're assigned to the first trainer in the trainer queue
 			trainerList.removeTrainerElement(memberList.popMemberFunc());
-		} else if (!memberList.isEmpty() && trainerList.isEmpty()){
-			// If there are no trainers available, the member just waits for one
-			cout << "A new member is now waiting in the queue" << endl;
+		} else if (!memberList.isEmpty() && trainerList.isEmpty() && newMember == i){
+			// newMember has to match i so this message isn't constantly printed
+			cout << "A new member is now waiting in the queue. The time is currently" << currentTime() << "." << endl;
+			// Notify how many members are in the queue
 			cout << "There are now " << memberList.listElements("member") << " members in the queue." << endl;
+			// Increment i to stop looped outputs until another member arrives
+			i++;
 		}
 	}
 	return; // When the simulation stops running, kill this thread
@@ -182,10 +190,11 @@ void WeightWatchers::generateVisitingMembers(){
 	// Open the members file
 	ifstream myfile("members.txt");
 	if(myfile.is_open()){
-		string line;
-		// Add every line to the vector
-		while(getline(myfile, line)){
-			v.push_back(line);
+		string name;
+		// Whilst there are lines left in the file
+		while(getline(myfile, name)){
+			// Add the name to the vector
+			v.push_back(name);
 		}
 	}
 	// If the simulation is running and there are no members left
@@ -202,10 +211,10 @@ void WeightWatchers::generateVisitingMembers(){
 		member.setMemberName(memberName);
 		// Add this member to the queue of waiting members
 		memberList.addMemberElement(&member);
-		// Notify that a member has arrived
-		cout << "new member arrived " << endl;
-		// Notify how many members are waiting
-		cout << memberList.listElements("member");
+		// Notify of their arrival
+		cout << memberName << " has just arrived at the club." << endl;
+		// Increment newMember so serveMembers() can print
+		newMember++;
 		// Sleep for a random amount of time to simulate the gap between member arrival
 		this_thread::sleep_for(chrono::milliseconds(((rand() % 10 + 1) * 1000)));
 	}
@@ -224,7 +233,6 @@ void WeightWatchers::simulationRunTime(){
 		runTime--;
 		// Sleep for a second
 		this_thread::sleep_for(chrono::milliseconds(1000));
-		cout << runTime << endl;
 	}
 	// If the simulation has been closed, end this thread
 	if(!isSimRunning){runTime = 0; return;}
@@ -345,4 +353,21 @@ void WeightWatchers::clearScreen(){
 #else // If user isn't running Windows (most likely running UNIX)
 	system("clear");
 #endif
+}
+
+/**
+ * Retrieves the current local time of the system. Not used for anything major yet, but it
+ * will come in useful.
+ *
+ * @return time the current time
+ */
+const string WeightWatchers::currentTime() {
+	time_t now = time(0);
+	struct tm tstruct;
+	char time[80];
+	// Initializes structure with the local time
+	tstruct = *localtime(&now);
+	// Returns time in the format HH:MM:SS
+	strftime(time, sizeof(time), "%X", &tstruct);
+	return time;
 }

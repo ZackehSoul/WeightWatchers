@@ -1,5 +1,6 @@
 #include "BodyStatsCalculator.h"
 #include "Trainer.h"
+#include "WeightWatchers.h"
 
 Trainer::Trainer() {
 	isBusy = false;
@@ -20,23 +21,6 @@ bool Trainer::isTrainerBusy(){
 	} else {
 		return false;
 	}
-}
-
-/**
- * Retrieves the current local time of the system. Not used for anything major yet, but it
- * will come in useful.
- *
- * @return time the current time
- */
-const string Trainer::currentTime() {
-	time_t now = time(0);
-	struct tm tstruct;
-	char time[80];
-	// Initializes structure with the local time
-	tstruct = *localtime(&now);
-	// Returns time in the format HH:MM:SS
-	strftime(time, sizeof(time), "%X", &tstruct);
-	return time;
 }
 
 /**
@@ -109,16 +93,17 @@ string Trainer::leadingZeros(int input, int digitAmount){
  * @param seconds the transaction time in seconds
  */
 void Trainer::decrementTime(){
+	WeightWatchers * pMain = new WeightWatchers();
 	// While the user has some time left, decrement in intervals of a second
 	while(transactionTime > 0){
 		transactionTime--;
-		cout << transactionTime << endl; // For testing decrementing
 		this_thread::sleep_for(chrono::milliseconds(1000));
 	}
 	// When the user has no time remaining, the trainer becomes available
 	isBusy = false;
-	cout << "Trainer " << getTrainerID() << " is no longer busy." << endl;
+	cout << associatedMember->getMemberName()<< "has gone home and Trainer " << getTrainerID() << " is no longer busy at " << pMain->currentTime() << ".\n" << endl;
 	associatedMember = NULL;
+	delete pMain;
 }
 
 /**
@@ -128,15 +113,17 @@ void Trainer::decrementTime(){
  * @param status the trainer's status
  */
 void Trainer::setStatus(string status){
+	WeightWatchers * pMain = new WeightWatchers();
 	// If a trainer becomes busy, start decrementing the transaction time
 	if(status == "busy"){
-		cout << "Trainer " << getTrainerID() << " is now busy." << endl;
+		cout << "Trainer " << getTrainerID() << " is now busy with " << associatedMember->getMemberName() << " at " << pMain->currentTime() << ".\n" << endl;
 		isBusy = true;
 		thread decrementation(&Trainer::decrementTime, this);
 		decrementation.detach();
 	} else {
 		isBusy = false;
 	}
+	delete pMain;
 }
 
 /**

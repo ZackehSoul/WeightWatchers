@@ -1,6 +1,7 @@
 #ifndef WEIGHT_WATCHERS_H_
 #define WEIGHT_WATCHERS_H_
 #include <algorithm>			// For validation functions and transform()
+#include <ctime>		// To retrieve the current time
 #include <fstream>				// Needed for the file stream
 #include <iostream>				// For input/output
 #include "LinkedList.h"			// Needed for the member and trainer queues
@@ -20,6 +21,7 @@ private:
 	bool isSimRunning;			// If the simulation is running
 	LinkedList trainerList;		// Queue of trainers waiting to serve clients
 	LinkedList memberList;		// Queue of members waiting to be served
+	int newMember = 0;
 public:
 	WeightWatchers();
 	virtual ~WeightWatchers();
@@ -35,6 +37,7 @@ public:
 	void simulationRunTime();						// Keeps track of the runtime and exits the program
 	void generateVisitingMembers();					// Generates visitors for the healthy club
 	void serveMembers();							// Assigns members to trainers and makes them both busy
+	const string currentTime();				// Returns the current time
 };
 
 #endif
