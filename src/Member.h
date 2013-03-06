@@ -1,5 +1,6 @@
 #ifndef MEMBER_H_
 #define MEMBER_H_
+#include <iostream>
 
 using namespace std;
 
