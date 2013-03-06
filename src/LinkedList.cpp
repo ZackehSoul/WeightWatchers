@@ -67,13 +67,14 @@ void LinkedList::addMemberElement(Member * member){
  */
 void LinkedList::removeTrainerElement(Member * member){
 	trainerNode * toDelete = trainerHeadNode;
-	// When a trainer is removed from the list, they're assigned a member
+	// They're then removed from the list
 	trainerHeadNode->trainer->assignMember(member);
 	// And they become busy
 	trainerHeadNode->trainer->setStatus("busy");
-	// They're then removed from the list
+	// The head node then becomes the next node
 	trainerHeadNode = toDelete->link;
-	delete trainerHeadNode;
+	// And the original head node is deleted
+	delete toDelete;
 }
 
 /**
@@ -84,27 +85,38 @@ void LinkedList::removeTrainerElement(Member * member){
 void LinkedList::removeMemberElement(){
 	memberNode * toDelete = memberHeadNode;
 	// When a member is removed from the list, they become assigned to a trainer
-	removeTrainerElement(memberHeadNode->member);
+	popMember = memberHeadNode->member;
+	// The head node then becomes the next node
 	memberHeadNode = toDelete->link;
-	delete memberHeadNode;
+	// And the original node is deleted
+	delete toDelete;
 }
 
 /**
  * Returns the amount of items currently inside the linked list. Essentially used for testing.
+ *
+ * @param type the type of queue to list
+ * @return nodeCount the number of nodes in the queue
  */
-string LinkedList::listElements(){
-	trainerNode * currentNode = trainerHeadNode;
-	stringstream elements; // Stringstream to store number of nodes
+int LinkedList::listElements(string type){
+	// nodeCount tracks the amount of nodes in the queue
 	int nodeCount = 0;
-	// While there are still links to continuing nodes
-	while(currentNode != NULL){
-		// Add the node to the count
-		nodeCount++;
-		// Move to the next node
-		currentNode = currentNode->link ;
+	// If the type is member, the member queue is specified
+	if(type == "member"){
+		// Create a pointer to the head node in the member queue
+		memberNode * pMemberNode = memberHeadNode;
+		// Count through all the nodes in the queue
+		for (pMemberNode = memberHeadNode; pMemberNode != NULL; pMemberNode = pMemberNode->link){
+			nodeCount++; // Increment the node count every time you reach a new node
+		}
+	} else {
+		// Same concept as above
+		trainerNode * pTrainNode = trainerHeadNode;
+		for (pTrainNode = trainerHeadNode; pTrainNode != NULL; pTrainNode = pTrainNode->link){
+			nodeCount++;
+		}
 	}
-	elements << nodeCount;	// Add the number of nodes to the stringstream
-	return elements.str();	// Return the number of nodes as a printable string
+	return nodeCount; // Return nodeCount the number of nodes in the queue
 }
 
 /**
@@ -122,18 +134,10 @@ bool LinkedList::isEmpty(){
 }
 
 /**
- * Tracks and assigns member objects from the start of the queue to a trainer. This only
- * occurs when both lists aren't empty.
+ * Retrieves the head node from the member list and returns it to the main functions.
+ *
+ * @return popMember the pointer to the member
  */
-void LinkedList::serveMembers(){
-	WeightWatchers * pMain = new WeightWatchers();
-	// If the simulation is running, the queue is moving
-	while(pMain->isSimulationRunning()){
-		// If there is both a trainer and a member waiting, the member becomes assigned
-		if(!pMain->memberList.isEmpty() && !pMain->trainerList.isEmpty()){
-			cout << "assignment made" << endl;
-			pMain->memberList.removeMemberElement();
-		}
-	}
-	return;
+Member * LinkedList::popMemberFunc(){
+	return popMember;
 }
