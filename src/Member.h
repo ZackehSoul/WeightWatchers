@@ -12,7 +12,6 @@ private:
 	string gender;					// The user's gender
 	const string arrivalTime;		// The user's arrival time
 	const string waitingTime;		// The user's waiting time
-	const string transactionTime;	// The user's transaction time
 public:
 	Member();
 	virtual ~Member();

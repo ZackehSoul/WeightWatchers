@@ -7,7 +7,6 @@ Member::Member() {
 	gender = "";
 	string arrivalTime = "";
 	string waitingTime = "";
-	string transactionTime = "";
 }
 
 Member::~Member() {
