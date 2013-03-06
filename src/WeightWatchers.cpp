@@ -94,11 +94,9 @@ void WeightWatchers::runSimulation(){
 	for(int i = 0; i <= trainerNo; i++){
 		// Give all trainers an ID number
 		trainers[i].setTrainerID(i + 1);
+		trainers[i].setTransactionTime(pStats->twoDecimalPlaces(transactionTime));
 		trainerList.addTrainerElement(&trainers[i]);
-		trainers[i].setTransactionTime(60 * pStats->twoDecimalPlaces(transactionTime));
 	}
-	// Convert to minutes
-	//pTrainer->setTransactionTime(60 * pStats->twoDecimalPlaces(transactionTime));
 
 	// Because the following thread decrements runTime, we need a variable to remember the original
 	int runningTime = runTime;
@@ -138,38 +136,80 @@ void WeightWatchers::runSimulation(){
 		cout << ".\n" << endl;
 	}
 
-	thread visiterGeneration(&WeightWatchers::generateVisitingMembers, this);
-	visiterGeneration.detach();
-	thread visiterAssignment(&LinkedList::serveMembers, &trainerList);
-	visiterAssignment.detach();
+	// Start the simulation of visitors arriving and detach so it runs independently
+	thread visitorGeneration(&WeightWatchers::generateVisitingMembers, this);
+	visitorGeneration.detach();
 
-	// The simulation has ended, so set the boolean to false to kill the thread
-	//isSimRunning = false;
+	// Start serving arriving visitors and detach so it runs independently
+	thread visitorAssignment(&WeightWatchers::serveMembers, this);
+	visitorAssignment.detach();
+
+	// Ask if the user wants to exit or continue
 	toReturnOrExit();
 }
 
+/**
+ * Tracks and assigns member objects from the start of the queue to a trainer. This only
+ * occurs when both lists aren't empty.
+ */
+void WeightWatchers::serveMembers(){
+	// If the simulation is running, the queue is moving
+	while(isSimRunning){
+		// If there is both a trainer and a member waiting, the member becomes assigned
+		if(!memberList.isEmpty() && !trainerList.isEmpty()){
+			// A member is removed from the front of the queue
+			memberList.removeMemberElement();
+			// They're assigned to the first trainer in the trainer queue
+			trainerList.removeTrainerElement(memberList.popMemberFunc());
+		} else if (!memberList.isEmpty() && trainerList.isEmpty()){
+			// If there are no trainers available, the member just waits for one
+			cout << "A new member is now waiting in the queue" << endl;
+			cout << "There are now " << memberList.listElements("member") << " members in the queue." << endl;
+		}
+	}
+	return; // When the simulation stops running, kill this thread
+}
+
+/**
+ * Generates visitors for the simulation, making them arrivate at random intervals between each other.
+ * The visitors are generated based from the members included in the member list. Runs as a separate thread
+ * and is killed when the simulation ends.
+ */
 void WeightWatchers::generateVisitingMembers(){
 	int randomIndex; string memberName;
-	// Create array of member objects based on user input and a list to track them in
+	// Create array of member objects based the member list
 	vector<string> v;
+	// Open the members file
 	ifstream myfile("members.txt");
 	if(myfile.is_open()){
 		string line;
+		// Add every line to the vector
 		while(getline(myfile, line)){
 			v.push_back(line);
 		}
 	}
+	// If the simulation is running and there are no members left
 	while(isSimRunning && !v.empty()){
+		// Create a member object
 		Member member;
+		// Choose a random index within the vector
 		randomIndex = rand() % v.size();
+		// Find the name of the member at the chosen index
 		memberName = v.at(randomIndex);
+		// Erase this member from the vector
 		v.erase(v.begin() + randomIndex);
+		// Name the member object the name at the chosen index
 		member.setMemberName(memberName);
+		// Add this member to the queue of waiting members
 		memberList.addMemberElement(&member);
+		// Notify that a member has arrived
+		cout << "new member arrived " << endl;
+		// Notify how many members are waiting
+		cout << memberList.listElements("member");
+		// Sleep for a random amount of time to simulate the gap between member arrival
 		this_thread::sleep_for(chrono::milliseconds(((rand() % 10 + 1) * 1000)));
-		cout << "person added to list" << endl;
 	}
-	return;
+	return; // If the simulation isn't running, end the thread
 }
 
 /**
@@ -207,20 +247,21 @@ void WeightWatchers::simulationRunTime(){
  */
 double WeightWatchers::validateDouble(double input){
 	// Currently has a bug if the user enters a double with an integer as the first character.
-	// Can be solved by changing the input to string and converting to double.
 	int i = 0;
 	while (1) {
 		cin >> input;
 		if (cin.good()){
 			break;
 		} else {
+			// Only print one blank line for neat formatting
 			if (i == 0) cout << endl, i++;
+			// Show the error and clear the input
 			cout << "Please provide a valid number: ";
 			cin.clear();
 			while (cin.get() != '\n');
 		}
 	}
-	return input;
+	return input; // Return the validated input
 }
 
 /**
@@ -234,9 +275,12 @@ string WeightWatchers::validateString(string input, string attribute){
 	int i = 0;
 	while(1){
 		cin >> input;
+		// If the input doesn't contain a number, show error
 		if (find_if(input.begin(), input.end(), ::isdigit) != input.end())
 		{
+			// Only print a blank line once for neat formatting
 			if (i == 0) cout << endl, i++;
+			// Shows error message and require new input
 			cout << "Please provide a valid " << attribute << ": ";
 			cin.clear();
 			while (cin.get() != '\n');
@@ -244,7 +288,7 @@ string WeightWatchers::validateString(string input, string attribute){
 			break;
 		}
 	}
-	return input;
+	return input; // Else we return the validated input
 }
 
 /**
@@ -254,7 +298,9 @@ string WeightWatchers::validateString(string input, string attribute){
 void WeightWatchers::toReturnOrExit(){
 	string selection;
 	cout << "To return to the main menu type \"menu\" or type \"exit\" to exit: ";
-	cin >> WeightWatchers::exitStatus;
+	cin >> selection;
+	// Redirects to setExitStatus instead of inputting exitStatus directly so the simulation is closed
+	setExitStatus(selection);
 }
 
 /**
@@ -282,6 +328,10 @@ string WeightWatchers::getExitStatus(){
  * @param string the exit status
  */
 void WeightWatchers::setExitStatus(string string){
+	// If the user chose to exit, we close the simulation first to kill all threads
+	if(string == "exit"){
+		isSimRunning = false;
+	}
 	exitStatus = string;
 }
 
@@ -295,12 +345,4 @@ void WeightWatchers::clearScreen(){
 #else // If user isn't running Windows (most likely running UNIX)
 	system("clear");
 #endif
-}
-
-bool WeightWatchers::isSimulationRunning(){
-	if (isSimRunning) {
-		return true;
-	} else {
-		return false;
-	}
 }
