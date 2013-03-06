@@ -22,16 +22,12 @@ WeightWatchers::~WeightWatchers(){
  * validating the inputs. Asks the user if they want to return to the main menu after usage
  * or if they wish to exit the program.
  */
-void WeightWatchers::calculateStatistics(){
+void WeightWatchers::calculateStatistics(string memberInput, string genderInput){
 	BodyStatsCalculator * pStats = new BodyStatsCalculator();
 	// Sets up a new member and asks for user input
 	cout << "Please enter the required information:\n" << endl;
 	Member member;
-
-	// Validates and sets the client's name
-	cout << "Please enter your first name: ";
-	memberName = validateString(memberName, "name");
-	member.setMemberName(memberName);
+	member.setMemberName(memberInput);
 
 	// Validates and sets the client's height
 	cout << "Please enter your height(cm): ";
@@ -45,7 +41,7 @@ void WeightWatchers::calculateStatistics(){
 
 	// Validates and sets the client's gender
 	cout << "Please enter your gender: ";
-	gender = validateString(gender, "gender");
+	gender = validateString(genderInput, "gender");
 	gender = toLowerCase(gender);
 
 	// Verify the user has entered a correct gender before allowing them to continue
@@ -85,7 +81,6 @@ void WeightWatchers::calculateStatistics(){
 void WeightWatchers::runSimulation(){
 	int trainerNo; double transactionTime = 0;
 	BodyStatsCalculator * pStats = new BodyStatsCalculator();
-	Trainer * pTrainer = new Trainer();
 
 	// Display the opening information in the cleared screen
 	cout << "Please enter the required information:\n" << endl;
@@ -94,8 +89,16 @@ void WeightWatchers::runSimulation(){
 	cout << "Please enter the amount of transaction time you wish to have(hours): ";
 	// Input and validate transaction time
 	transactionTime = validateDouble(transactionTime);
+	// Create array of trainer objects based on user input and a list to track them in
+	Trainer trainers[trainerNo];
+	for(int i = 0; i <= trainerNo; i++){
+		// Give all trainers an ID number
+		trainers[i].setTrainerID(i + 1);
+		trainerList.addTrainerElement(&trainers[i]);
+		trainers[i].setTransactionTime(60 * pStats->twoDecimalPlaces(transactionTime));
+	}
 	// Convert to minutes
-	pTrainer->setTransactionTime(60 * pStats->twoDecimalPlaces(transactionTime));
+	//pTrainer->setTransactionTime(60 * pStats->twoDecimalPlaces(transactionTime));
 
 	// Because the following thread decrements runTime, we need a variable to remember the original
 	int runningTime = runTime;
@@ -108,7 +111,7 @@ void WeightWatchers::runSimulation(){
 
 	// Clear screen and display current time and how long simulation will run
 	clearScreen();
-	cout << "The time is now " << pTrainer->currentTime() << "." << endl;
+	cout << "The time is now " << trainers[1].currentTime() << "." << endl;
 	cout << "The server will continue to run for ";
 	// Formats the remaining server time correctly
 	if(((runningTime / 60) % 24) != 0){
@@ -135,16 +138,38 @@ void WeightWatchers::runSimulation(){
 		cout << ".\n" << endl;
 	}
 
-	// Create array of trainer objects based on user input
-	Trainer trainers[trainerNo];
-	for(int i = 0; i <= trainerNo; i++){
-		// Give all trainers an ID number
-		trainers[i].setTrainerID(i + 1);
-	}
+	thread visiterGeneration(&WeightWatchers::generateVisitingMembers, this);
+	visiterGeneration.detach();
+	thread visiterAssignment(&LinkedList::serveMembers, &trainerList);
+	visiterAssignment.detach();
 
 	// The simulation has ended, so set the boolean to false to kill the thread
-	isSimRunning = false;
+	//isSimRunning = false;
 	toReturnOrExit();
+}
+
+void WeightWatchers::generateVisitingMembers(){
+	int randomIndex; string memberName;
+	// Create array of member objects based on user input and a list to track them in
+	vector<string> v;
+	ifstream myfile("members.txt");
+	if(myfile.is_open()){
+		string line;
+		while(getline(myfile, line)){
+			v.push_back(line);
+		}
+	}
+	while(isSimRunning && !v.empty()){
+		Member member;
+		randomIndex = rand() % v.size();
+		memberName = v.at(randomIndex);
+		v.erase(v.begin() + randomIndex);
+		member.setMemberName(memberName);
+		memberList.addMemberElement(&member);
+		this_thread::sleep_for(chrono::milliseconds(((rand() % 10 + 1) * 1000)));
+		cout << "person added to list" << endl;
+	}
+	return;
 }
 
 /**
@@ -162,7 +187,7 @@ void WeightWatchers::simulationRunTime(){
 		cout << runTime << endl;
 	}
 	// If the simulation has been closed, end this thread
-	if(!isSimRunning) return;
+	if(!isSimRunning){runTime = 0; return;}
 	// If the simulation is still running, display termination notice
 	cout << "\nYour session is about to expire...  ";
 	for(int i = 10; i > 0; i--){
@@ -270,4 +295,12 @@ void WeightWatchers::clearScreen(){
 #else // If user isn't running Windows (most likely running UNIX)
 	system("clear");
 #endif
+}
+
+bool WeightWatchers::isSimulationRunning(){
+	if (isSimRunning) {
+		return true;
+	} else {
+		return false;
+	}
 }
