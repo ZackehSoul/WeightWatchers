@@ -27,11 +27,13 @@ private:
 public:
 	LinkedList();
 	virtual ~LinkedList();
-	void removeTrainerElement();		// Remove a trainer from the list
-	void removeMemberElement();			// Remove a member from the list
-	void addTrainerElement(Trainer *);	// Add a trainer to the list
-	void addMemberElement(Member *);	// Add a member to the list
-	string listElements();				// Return the elements in the list
+	void removeTrainerElement(Member *);	// Remove a trainer from the list
+	void removeMemberElement();				// Remove a member from the list
+	void addTrainerElement(Trainer *);		// Add a trainer to the list
+	void addMemberElement(Member *);		// Add a member to the list
+	string listElements();					// Return the elements in the list
+	void serveMembers();					// Assigns members to trainers
+	bool isEmpty();							// Checks if the queues are empty
 };
 
 #endif
