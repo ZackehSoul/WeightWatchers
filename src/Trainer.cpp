@@ -3,7 +3,6 @@
 
 Trainer::Trainer() {
 	isBusy = false;
-	memberName = "";
 	trainerID = 0;
 	transactionTime = 0;
 }
@@ -118,6 +117,7 @@ void Trainer::decrementTime(){
 	}
 	// When the user has no time remaining, the trainer becomes available
 	isBusy = false;
+	cout << "Trainer " << trainerID << " is no longer busy";
 }
 
 /**
@@ -129,6 +129,7 @@ void Trainer::decrementTime(){
 void Trainer::setStatus(string status){
 	// If a trainer becomes busy, start decrementing the transaction time
 	if(status == "busy"){
+		cout << "Trainer " << trainerID << " is now busy";
 		isBusy = true;
 		thread decrementation(&Trainer::decrementTime, this);
 		decrementation.detach();
@@ -169,4 +170,13 @@ void Trainer::setTrainerID(int ID){
 string Trainer::getTrainerID(){
 	string ID = leadingZeros(trainerID, 3);
 	return ID;
+}
+
+/**
+ * Assigns a member from the queue to the trainer
+ *
+ * @param member the member to assign to the trainer
+ */
+void Trainer::assignMember(Member * member){
+	associatedMember = member;
 }

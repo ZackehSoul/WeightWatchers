@@ -10,9 +10,8 @@
 class Trainer {
 private:
 	bool isBusy;					// The trainer's status
-	string memberName;				// The trainer's allocated client
+	Member * associatedMember;		// The trainer's allocated client
 	int transactionTime;			// The trainer's transaction time
-	Member client;					// The client associated with the trainer
 	int trainerID;					// The trainer's ID number
 public:
 	Trainer();
@@ -28,6 +27,7 @@ public:
 	string leadingZeros(int, int);			// Forces integers to a given digit amount
 	void setTrainerID(int);					// Sets an ID number for each trainer
 	string getTrainerID();					// Gets the ID number to 3 digits
+	void assignMember(Member *);			// Assigns a member to the trainer
 };
 
 #endif
