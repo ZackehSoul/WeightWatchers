@@ -1,13 +1,12 @@
 #ifndef BODYSTATSCALCULATOR_H_
 #define BODYSTATSCALCULATOR_H_
-#include <cmath>
-#include <iostream>
+#include <cmath>		// For mathematical functions
+#include <iostream>		// For inputs and outputs
 
 using namespace std;
 
 class BodyStatsCalculator {
 private:
-	// Lists only available with c++11 or gnu++11
 	// Strings of the results of being outside boundaries with BMI
 	string bodyMassBoundaries[5] = {"underweight.", "of ideal weight.", "slightly overweight.", "overweight.", "obese."};
 	// Boundaries of classifications for male BMI

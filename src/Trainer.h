@@ -1,11 +1,11 @@
 #ifndef TRAINER_H_
 #define TRAINER_H_
-#include <chrono>
-#include <ctime>
-#include <iostream>
-#include "Member.h"
-#include <sstream>
-#include <thread>					// Support for concurrent programming, experimental
+#include <chrono>		// To allow the threads to sleep
+#include <ctime>		// To retrieve the current time
+#include <iostream>		// For inputs and outputs
+#include "Member.h"		// To create member pointers
+#include <sstream>		// For string streams and converting numbers to strings
+#include <thread>		// Support for concurrent programming, experimental
 
 class Trainer {
 private:

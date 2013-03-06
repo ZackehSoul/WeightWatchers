@@ -1,26 +1,25 @@
 #ifndef WEIGHT_WATCHERS_H_
 #define WEIGHT_WATCHERS_H_
-#include <algorithm>
-#include <fstream>
-#include <iostream>
-#include "LinkedList.h"
-#include <string>
-#include <thread>					// Support for concurrent programming, experimental
-#include <vector>
-#include <windows.h>
+#include <algorithm>			// For validation functions and transform()
+#include <fstream>				// Needed for the file stream
+#include <iostream>				// For input/output
+#include "LinkedList.h"			// Needed for the member and trainer queues
+#include <thread>				// Support for concurrent programming, experimental
+#include <vector>				// Vector used for the visitor simulation
 
 using namespace std;
 
 class WeightWatchers{
 private:
-	string exitStatus;	// If the user wants to exit the program
-	string memberName;	// The user's name
-	double height;		// The user's height
-	double weight;		// The user's weight
-	string gender;		// The user's gender
-	int runTime;		// The allocated run time of the simulation
-	//bool isSimRunning;	// If the simulation is running
-	string statistics[3] = {"Body Mass Index:", "Body Surface Area:", "Lean Body Weight:"};
+	string exitStatus;			// If the user wants to exit the program
+	string memberName;			// The user's name
+	double height;				// The user's height
+	double weight;				// The user's weight
+	string gender;				// The user's gender
+	int runTime;				// The allocated run time of the simulation
+	bool isSimRunning;			// If the simulation is running
+	LinkedList trainerList;		// Queue of trainers waiting to serve clients
+	LinkedList memberList;		// Queue of members waiting to be served
 public:
 	WeightWatchers();
 	virtual ~WeightWatchers();
@@ -34,11 +33,8 @@ public:
 	void runSimulation();							// Runs the simulation
 	void setExitStatus(string);						// Sets the exit status of the program
 	void simulationRunTime();						// Keeps track of the runtime and exits the program
-	bool isSimulationRunning();
-	void generateVisitingMembers();
-	LinkedList trainerList;
-	LinkedList memberList;
-	bool isSimRunning;	// If the simulation is running
+	void generateVisitingMembers();					// Generates visitors for the healthy club
+	void serveMembers();							// Assigns members to trainers and makes them both busy
 };
 
 #endif
