@@ -46,7 +46,7 @@ const string Trainer::currentTime() {
  */
 void Trainer::setTransactionTime(double hours){
 	// Stores transaction time as seconds
-	transactionTime = hours * 60 * 60;
+	transactionTime = (hours * 60) * 60;
 }
 
 /**
@@ -117,7 +117,8 @@ void Trainer::decrementTime(){
 	}
 	// When the user has no time remaining, the trainer becomes available
 	isBusy = false;
-	cout << "Trainer " << trainerID << " is no longer busy";
+	cout << "Trainer " << getTrainerID() << " is no longer busy." << endl;
+	associatedMember = NULL;
 }
 
 /**
@@ -129,7 +130,7 @@ void Trainer::decrementTime(){
 void Trainer::setStatus(string status){
 	// If a trainer becomes busy, start decrementing the transaction time
 	if(status == "busy"){
-		cout << "Trainer " << trainerID << " is now busy";
+		cout << "Trainer " << getTrainerID() << " is now busy." << endl;
 		isBusy = true;
 		thread decrementation(&Trainer::decrementTime, this);
 		decrementation.detach();
