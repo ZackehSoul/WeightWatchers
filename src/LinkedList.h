@@ -2,6 +2,7 @@
 #define LINKEDLIST_H_
 #include <iostream>		// For inputs and outputs
 #include "Member.h"		// For member objects
+#include <thread>
 #include "Trainer.h"	// For trainer objects
 
 using namespace std;
@@ -23,7 +24,7 @@ private:
 		memberNode * link;	// Link to the next node in the list
 	} * memberHeadNode;		// Pointer to the first node
 
-	Member * popMember;						// The member removed from the head
+	Member * popMember;		// The member removed from the head
 
 public:
 	LinkedList();
@@ -35,7 +36,8 @@ public:
 	int listElements(string);				// Return the elements in the list
 	void serveMembers();					// Assigns members to trainers
 	bool isEmpty();							// Checks if the queues are empty
-	Member * popMemberFunc();					// Returns popMember to other classes
+	Member * popMemberFunc();				// Returns popMember to other classes
+	void trackTrainerElement(Trainer *);	// Keeps track of when a trainer is busy
 };
 
 #endif

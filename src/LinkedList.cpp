@@ -71,10 +71,30 @@ void LinkedList::removeTrainerElement(Member * member){
 	trainerHeadNode->trainer->assignMember(member);
 	// And they become busy
 	trainerHeadNode->trainer->setStatus("busy");
+	// Track the trainer to see when they aren't busy
+	thread trackTrainer(&LinkedList::trackTrainerElement, this, trainerHeadNode->trainer);
+	trackTrainer.detach();
 	// The head node then becomes the next node
 	trainerHeadNode = toDelete->link;
 	// And the original head node is deleted
 	delete toDelete;
+}
+
+/**
+ * Tracks when a trainer becomes busy and adds them back to the queue when they become free. Without
+ * having the trainer passed as a parameter the first trainer is skipped out on due to the updated
+ * trainerHeadNode.
+ *
+ * @param trainer the trainer object
+ */
+void LinkedList::trackTrainerElement(Trainer * trainer){
+	while(trainer->isTrainerBusy()){
+		// Do nothing
+	}
+	// Add the trainer back into the queue
+	addTrainerElement(trainer);
+	// End this thread
+	return;
 }
 
 /**
