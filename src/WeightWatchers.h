@@ -25,19 +25,20 @@ private:
 public:
 	WeightWatchers();
 	virtual ~WeightWatchers();
-	string getExitStatus();							// Returns program's exit status
-	void calculateStatistics(string, string);		// Calculates client's statistics
-	void toReturnOrExit();							// Continues or exits the program
-	string toLowerCase(string &);					// Converts strings to lower case
-	double validateDouble(double);					// Validates input doubles
-	string validateString(string, string);			// Validates input strings
-	void clearScreen();								// Clears the terminal window for different OS
-	void runSimulation();							// Runs the simulation
-	void setExitStatus(string);						// Sets the exit status of the program
-	void simulationRunTime();						// Keeps track of the runtime and exits the program
-	void generateVisitingMembers();					// Generates visitors for the healthy club
-	void serveMembers();							// Assigns members to trainers and makes them both busy
-	const string currentTime();				// Returns the current time
+	string getExitStatus();						// Returns program's exit status
+	void calculateStatistics(string, string);	// Calculates client's statistics
+	void toReturnOrExit();						// Continues or exits the program
+	string toLowerCase(string &);				// Converts strings to lower case
+	double validateDouble(double);				// Validates input doubles
+	string validateString(string, string);		// Validates input strings
+	void clearScreen();							// Clears the terminal window for different OS
+	void runSimulation();						// Runs the simulation
+	void setExitStatus(string);					// Sets the exit status of the program
+	void simulationRunTime();					// Keeps track of the runtime and exits the program
+	void generateVisitingMembers();				// Generates visitors for the healthy club
+	void serveMembers();						// Assigns members to trainers and makes them both busy
+	const string currentTime();					// Returns the current time
+	void noLongerBusy(Trainer *);				// Called from Trainer class to add themselves back to the queue
 };
 
 #endif

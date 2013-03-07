@@ -91,13 +91,13 @@ void WeightWatchers::runSimulation(){
 	transactionTime = validateDouble(transactionTime);
 	// Create array of trainer objects based on user input and a list to track them in
 	Trainer trainers[trainerNo];
-	for(int i = 0; i <= trainerNo; i++){
+	for(int i = 1; i <= trainerNo; i++){
 		// Give all trainers an ID number
-		trainers[i].setTrainerID(i + 1);
+		trainers[i - 1].setTrainerID(i);
 		// Set their transaction time
-		trainers[i].setTransactionTime(pStats->twoDecimalPlaces(transactionTime));
+		trainers[i - 1].setTransactionTime(pStats->twoDecimalPlaces(transactionTime));
 		// Add them to the trainer queue
-		trainerList.addTrainerElement(&trainers[i]);
+		trainerList.addTrainerElement(&trainers[i - 1]);
 	}
 
 	// Because the following thread decrements runTime, we need a variable to remember the original
@@ -170,7 +170,7 @@ void WeightWatchers::serveMembers(){
 			// newMember has to match i so this message isn't constantly printed
 			cout << "A new member is now waiting in the queue. The time is currently" << currentTime() << "." << endl;
 			// Notify how many members are in the queue
-			cout << "There are now " << memberList.listElements("member") << " members in the queue." << endl;
+			cout << "There are now " << memberList.listElements("member") << " members in the queue.\n" << endl;
 			// Increment i to stop looped outputs until another member arrives
 			i++;
 		}
@@ -197,8 +197,12 @@ void WeightWatchers::generateVisitingMembers(){
 			v.push_back(name);
 		}
 	}
+	// Set the seed to initialize random numbers
+	srand(time(NULL));
 	// If the simulation is running and there are no members left
 	while(isSimRunning && !v.empty()){
+		// Sleep for a random amount of time to simulate the gap between member arrival
+		this_thread::sleep_for(chrono::milliseconds(((rand() % 10 + 1) * 1000)));
 		// Create a member object
 		Member member;
 		// Choose a random index within the vector
@@ -214,9 +218,7 @@ void WeightWatchers::generateVisitingMembers(){
 		// Notify of their arrival
 		cout << memberName << " has just arrived at the club." << endl;
 		// Increment newMember so serveMembers() can print
-		newMember++;
-		// Sleep for a random amount of time to simulate the gap between member arrival
-		this_thread::sleep_for(chrono::milliseconds(((rand() % 10 + 1) * 1000)));
+		if(trainerList.isEmpty()) newMember++;
 	}
 	return; // If the simulation isn't running, end the thread
 }
@@ -236,7 +238,7 @@ void WeightWatchers::simulationRunTime(){
 	}
 	// If the simulation has been closed, end this thread
 	if(!isSimRunning){runTime = 0; return;}
-	// If the simulation is still running, display termination notice
+	// If the simulation is still running, display termination notice and end the simulation
 	cout << "\nYour session is about to expire...  ";
 	for(int i = 10; i > 0; i--){
 		if(i == 10) cout << "\b" << i;
@@ -370,4 +372,13 @@ const string WeightWatchers::currentTime() {
 	// Returns time in the format HH:MM:SS
 	strftime(time, sizeof(time), "%X", &tstruct);
 	return time;
+}
+
+/**
+ * Called from the Trainer class when they're no longer busy so they can add themselves to the queue again.
+ *
+ * @return trainerList the queue of trainers
+ */
+void WeightWatchers::noLongerBusy(Trainer * trainer){
+	trainerList.addTrainerElement(trainer);
 }

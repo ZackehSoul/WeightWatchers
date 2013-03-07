@@ -92,17 +92,20 @@ string Trainer::leadingZeros(int input, int digitAmount){
  *
  * @param seconds the transaction time in seconds
  */
-void Trainer::decrementTime(){
+void Trainer::decrementTime(string memberName){
 	WeightWatchers * pMain = new WeightWatchers();
+	//Because the transaction time is decremented we need to remember it
+	int tTime = transactionTime;
 	// While the user has some time left, decrement in intervals of a second
 	while(transactionTime > 0){
 		transactionTime--;
 		this_thread::sleep_for(chrono::milliseconds(1000));
 	}
 	// When the user has no time remaining, the trainer becomes available
-	isBusy = false;
-	cout << associatedMember->getMemberName()<< "has gone home and Trainer " << getTrainerID() << " is no longer busy at " << pMain->currentTime() << ".\n" << endl;
+	cout << memberName << " has gone home and Trainer " << getTrainerID() << " is no longer busy at " << pMain->currentTime() << ".\n" << endl;
 	associatedMember = NULL;
+	transactionTime = tTime;
+	isBusy = false;
 	delete pMain;
 }
 
@@ -118,7 +121,7 @@ void Trainer::setStatus(string status){
 	if(status == "busy"){
 		cout << "Trainer " << getTrainerID() << " is now busy with " << associatedMember->getMemberName() << " at " << pMain->currentTime() << ".\n" << endl;
 		isBusy = true;
-		thread decrementation(&Trainer::decrementTime, this);
+		thread decrementation(&Trainer::decrementTime, this, associatedMember->getMemberName());
 		decrementation.detach();
 	} else {
 		isBusy = false;
