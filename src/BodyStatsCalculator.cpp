@@ -116,7 +116,7 @@ string BodyStatsCalculator::getBodyMassResults(double bmi, double genderBoundari
 				result = bodyMassBoundaries[i];
 			}
 		} else if (i == 4){
-			if(bmi > genderBoundaries[i - 1]){
+			if(bmi >= genderBoundaries[i - 1]){
 				result = bodyMassBoundaries[i];
 			}
 		}
