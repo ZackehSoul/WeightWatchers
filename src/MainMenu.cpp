@@ -1,5 +1,6 @@
 #include "WeightWatchers.h"
 //--- Testing ---//
+#include "ServerClient.h"
 //--- Testing ---//
 
 /**
@@ -59,6 +60,13 @@ int main() {
 			pMain->calculateStatistics(firstName + " " + lastName, gender);
 		} else if (selection == 0000){
 			//--- Test function ---//
+			ServerClient * pTest = new ServerClient();
+			thread testThread(&ServerClient::socketConnection, pTest);
+			testThread.detach();
+			string variable;
+			cin >> variable;
+			pTest->toServer(variable);
+			delete pTest;
 			//--- Test function ---//
 		} else {
 			// Show the error and ask for a valid selection
