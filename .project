@@ -3,6 +3,7 @@
 	<name>HealthyClub</name>
 	<comment></comment>
 	<projects>
+		<project>Server</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
