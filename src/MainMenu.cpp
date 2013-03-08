@@ -61,11 +61,10 @@ int main() {
 		} else if (selection == 0000){
 			//--- Test function ---//
 			ServerClient * pTest = new ServerClient();
-			thread testThread(&ServerClient::socketConnection, pTest);
-			testThread.detach();
 			string variable;
 			cin >> variable;
-			pTest->toServer(variable);
+			thread testThread(&ServerClient::toServer, pTest, variable);
+			testThread.join();
 			delete pTest;
 			//--- Test function ---//
 		} else {

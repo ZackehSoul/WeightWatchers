@@ -8,64 +8,78 @@
 ServerClient::ServerClient(){
 	// When the client is called, the serverConnect loop must run
 	serverConnect = true;
-	// Initialize other variables
-	wVersionRequested = MAKEWORD(1, 1);
-	// Assign error code if WSAStartup fails
-	errorCode = WSAStartup(wVersionRequested, &wsaData);
 }
 
 ServerClient::~ServerClient(){
 	// TODO Auto-generated destructor stub
 }
 
-void ServerClient::socketConnection(){
-	// While the client is needed, we stay connected to the server
-	while(serverConnect){
-		// If there was an error starting
-		if(errorCode != 0){
-			// Output an error message with the error code.
-			cout << "WSAStartup error %ld" << static_cast<long>(WSAGetLastError()) << endl;
-			// Then cleanup and return to the outer thread
-			WSACleanup();
-			return;
-		}
-		// Create the address structure to be bound to the socket
-		target.sin_family = AF_INET;
-		// Uses SERVER_PORT defined earlier to connect on
-		target.sin_port = htons(SERVER_PORT);
-		// Sets the target IP, again defined earlier in IPAddress
-		target.sin_addr.s_addr = inet_addr (IPAddress);
+/**
+ * Sends a message to the server, after being called by toServer. Currently has a whitespace
+ * bug when sending the message which I need to fix, but the server connection is fine.
+ *
+ * @param message the message to be sent
+ */
+void ServerClient::socketConnection(string message){
 
-		// Create a new socket
-		serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-		// If the socket is invalid throw an error
-		if(serverSocket == INVALID_SOCKET){
-			// Output an error message
-			cout << "Socket error %ld" << static_cast<long>(WSAGetLastError()) << endl;
-			// Then cleanup and return to the outer thread
-			WSACleanup();
-			return;
-		}
-		// If there is a connection error to the socket
-		if(connect(serverSocket, (SOCKADDR *)&target, sizeof(target)) == SOCKET_ERROR){
-			// Output an error message and error code
-			cout << "Connection error %ld" << static_cast<long>(WSAGetLastError()) << endl;
-			// Then cleanup and return to the outer thread
-			WSACleanup();
-			return;
-		}
-		// Close the socket and clean up
-		closesocket(serverSocket);
+	WORD wVersionRequested;		// Used to check if WSAStartup succeeds
+	WSADATA	wsaData;			// Used to check if WSAStartup succeeds
+	SOCKADDR_IN target;			// Socket connection information
+	int	errorCode;				// Error codes if WSAStartup fails
+
+	toSend = message.c_str();	// Converts input string to const char *
+
+	// Initialize other variables
+	wVersionRequested = MAKEWORD(1, 1);
+	// Assign error code if WSAStartup fails
+	errorCode = WSAStartup(wVersionRequested, &wsaData);
+	// If there was an error starting
+	if(errorCode != 0){
+		// Output an error message with the error code.
+		cout << "WSAStartup error: " << static_cast<long>(WSAGetLastError()) << endl;
+		// Then cleanup and return to the outer thread
 		WSACleanup();
+		return;
 	}
+	// Create the address structure to be bound to the socket
+	target.sin_family = AF_INET;
+	// Uses SERVER_PORT defined earlier to connect on
+	target.sin_port = htons(SERVER_PORT);
+	// Sets the target IP, again defined earlier in IPAddress
+	target.sin_addr.s_addr = inet_addr (IPAddress);
+
+	// Create a new socket
+	serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	// If the socket is invalid throw an error
+	if(serverSocket == INVALID_SOCKET){
+		// Output an error message
+		cout << "Socket error: " << static_cast<long>(WSAGetLastError()) << endl;
+		// Then cleanup and return to the outer thread
+		WSACleanup();
+		return;
+	}
+	// If there is a connection error to the socket
+	if(connect(serverSocket, (SOCKADDR *)&target, sizeof(target)) == SOCKET_ERROR){
+		// Output an error message and error code
+		cout << "Connection error: " << static_cast<long>(WSAGetLastError()) << endl;
+		// Then cleanup and return to the outer thread
+		WSACleanup();
+		return;
+	}
+	send(serverSocket, toSend, 80, 0);
+	// Close the socket and clean up
+	closesocket(serverSocket);
+	WSACleanup();
+	_getche();
 	return; // End the thread
 }
 
+/**
+ * Called by any classes which need to output to the server.
+ *
+ * @param message the message to be sent to the server
+ */
 void ServerClient::toServer(string message){
-	// Create a char * from the input string
-	toSend = message.c_str();
-	// Pass it to the server
-	send(serverSocket, toSend, 80, 0);
 	// End the server connection
-	serverConnect = false;
+	socketConnection(message);
 }

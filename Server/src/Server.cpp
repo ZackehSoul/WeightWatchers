@@ -1,5 +1,5 @@
+#include <conio.h>
 #include <fstream>		// Needed for the file stream
-#include <ctime>		// For current time
 #include <iostream>		// Needed for input and output
 #include <winsock2.h>	// Needed for socket connection
 
@@ -30,7 +30,8 @@ int main(int argc, char * argv[]){
 	int	bytesReceived;
 
 	if(errorCode != 0){
-		cout << "WSAStarup error %ld" << static_cast<long>(WSAGetLastError()) << endl;
+		// If WSA fails to start up, print an error
+		cout << "WSAStarup error: " << static_cast<long>(WSAGetLastError()) << endl;
 		WSACleanup();
 		return false;
 	}
@@ -47,7 +48,7 @@ int main(int argc, char * argv[]){
 	socketA = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if(socketA < 0){
 		// If there's a socket error, display the error
-		cout << "Socket error %ld" << static_cast<long>(WSAGetLastError()) << endl;
+		cout << "Socket error: " << static_cast<long>(WSAGetLastError()) << endl;
 		// Then cleanup and return to the outer thread
 		WSACleanup();
 		return false;
@@ -59,7 +60,7 @@ int main(int argc, char * argv[]){
 	bindCode = bind(socketA, (struct sockaddr *) &channel, sizeof(channel));
 	if(bindCode < 0){
 		// If there's a binding error, display the error
-		cout << "Binding error %ld" << static_cast<long>(WSAGetLastError()) << endl;
+		cout << "Binding error: " << static_cast<long>(WSAGetLastError()) << endl;
 		// Then cleanup and return to the outer thread
 		WSACleanup();
 		return false;
@@ -69,7 +70,7 @@ int main(int argc, char * argv[]){
 	listenCode = listen(socketA, QUEUE_SIZE); // Set the queue size
 	if (listenCode < 0) {
 		// If there's a listening error, display the error
-		cout << "Listening error %ld" << static_cast<long>(WSAGetLastError()) << endl;
+		cout << "Listening error: " << static_cast<long>(WSAGetLastError()) << endl;
 		// Then cleanup and return to the outer thread
 		WSACleanup();
 		return false;
@@ -86,7 +87,7 @@ int main(int argc, char * argv[]){
 		socketB = accept(socketA, 0, 0);
 		if(socketB < 0){
 			// If there is a socket error output the error
-			cout << "Accept error %ld" << static_cast<long>(WSAGetLastError()) << endl;
+			cout << "Accept error: " << static_cast<long>(WSAGetLastError()) << endl;
 			// Then cleanup and return to the outer thread
 			WSACleanup();
 			return false;
