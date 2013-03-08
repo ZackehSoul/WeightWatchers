@@ -202,7 +202,7 @@ void WeightWatchers::generateVisitingMembers(){
 	// If the simulation is running and there are no members left
 	while(isSimRunning && !v.empty()){
 		// Sleep for a random amount of time to simulate the gap between member arrival
-		this_thread::sleep_for(chrono::milliseconds(((rand() % 10 + 1) * 1000)));
+		this_thread::sleep_for(chrono::milliseconds(((rand() % 9 + 1) * 100000)));
 		// Create a member object
 		Member member;
 		// Choose a random index within the vector
