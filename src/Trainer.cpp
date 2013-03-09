@@ -9,7 +9,7 @@ Trainer::Trainer() {
 }
 
 Trainer::~Trainer() {
-	// TODO Auto-generated destructor stub
+	delete pServer;
 }
 
 /**
@@ -102,7 +102,7 @@ void Trainer::decrementTime(string memberName){
 		this_thread::sleep_for(chrono::milliseconds(1000));
 	}
 	// When the user has no time remaining, the trainer becomes available
-	cout << memberName << " has gone home and Trainer " << getTrainerID() << " is no longer busy at " << pMain->currentTime() << ".\n" << endl;
+	pServer->socketConnection(memberName + " has gone home and Trainer " + getTrainerID() + " is no longer busy at " + pMain->currentTime() + ".\n\n");
 	associatedMember = NULL;
 	transactionTime = tTime;
 	isBusy = false;
@@ -119,7 +119,7 @@ void Trainer::setStatus(string status){
 	WeightWatchers * pMain = new WeightWatchers();
 	// If a trainer becomes busy, start decrementing the transaction time
 	if(status == "busy"){
-		cout << "Trainer " << getTrainerID() << " is now busy with " << associatedMember->getMemberName() << " at " << pMain->currentTime() << ".\n" << endl;
+		pServer->socketConnection("Trainer " + getTrainerID() + " is now busy with " + associatedMember->getMemberName() + " at " + pMain->currentTime() + ".\n\n");
 		isBusy = true;
 		thread decrementation(&Trainer::decrementTime, this, associatedMember->getMemberName());
 		decrementation.detach();

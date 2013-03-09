@@ -1,17 +1,19 @@
 #ifndef TRAINER_H_
 #define TRAINER_H_
-#include <chrono>		// To allow the threads to sleep
-#include <iostream>		// For inputs and outputs
-#include "Member.h"		// To create member pointers
-#include <sstream>		// For string streams and converting numbers to strings
-#include <thread>		// Support for concurrent programming, experimental
+#include <chrono>			// To allow the threads to sleep
+#include <iostream>			// For inputs and outputs
+#include "Member.h"			// To create member pointers
+#include "ServerClient.h"	// To allow printing to the server
+#include <sstream>			// For string streams and converting numbers to strings
+#include <thread>			// Support for concurrent programming, experimental
 
 class Trainer {
 private:
-	bool isBusy;					// The trainer's status
-	Member * associatedMember;		// The trainer's allocated client
-	int transactionTime;			// The trainer's transaction time
-	int trainerID;					// The trainer's ID number
+	bool isBusy;								// The trainer's status
+	Member * associatedMember;					// The trainer's allocated client
+	int transactionTime;						// The trainer's transaction time
+	int trainerID;								// The trainer's ID number
+	ServerClient * pServer = new ServerClient;	// Pointer to allow printing to server
 public:
 	Trainer();
 	virtual ~Trainer();
