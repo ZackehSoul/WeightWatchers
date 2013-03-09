@@ -60,12 +60,6 @@ int main() {
 			pMain->calculateStatistics(firstName + " " + lastName, gender);
 		} else if (selection == 0000){
 			//--- Test function ---//
-			ServerClient * pTest = new ServerClient();
-			string variable;
-			cin >> variable;
-			thread testThread(&ServerClient::toServer, pTest, variable);
-			testThread.join();
-			delete pTest;
 			//--- Test function ---//
 		} else {
 			// Show the error and ask for a valid selection
