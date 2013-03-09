@@ -10,11 +10,12 @@ WeightWatchers::WeightWatchers(){
 	weight = 0;				// Weight isn't set until user inputs data
 	gender = "";			// Gender isn't set until user inputs data
 	runTime = 0;			// RunTime isn't set until user inputs data
+	newMember = 0;			// Sets newMember counter to 0
 	isSimRunning = false;	// Simulation isn't always running when this class is created
 }
 
 WeightWatchers::~WeightWatchers(){
-	// TODO Auto-generated destructor stub
+	delete pServer;
 }
 
 /**
@@ -111,32 +112,37 @@ void WeightWatchers::runSimulation(){
 
 	// Clear screen and display current time and how long simulation will run
 	clearScreen();
-	cout << "The time is now " << currentTime() << "." << endl;
-	cout << "The server will continue to run for ";
+	// Start the server
+	system("start ..\\Server\\Release\\Server.exe");
+	pServer->socketConnection("The time is now " + currentTime() + ".\n");
+	pServer->socketConnection("The server will continue to run for ");
+	// Store the number in a stringstream
+	stringstream runFor;
 	// Formats the remaining server time correctly
 	if(((runningTime / 60) % 24) != 0){
 		// If the server runs for an hour and X minutes print an hour
-		if (((runningTime / 60) % 24) == 1) cout << "an hour";
+		if (((runningTime / 60) % 24) == 1) runFor << "an hour";
 		// Else print X hours
-		else cout << (runningTime / 60) % 24 << " hours";
+		else runFor << (runningTime / 60) % 24 << " hours";
 	}
 	// If the server runs for X hours and minutes > 0 append " and X minute(s)"
 	if((runningTime % 60) != 0){
 		// If there is an hour specified print and
 		if(((runningTime / 60) % 24) != 0){
-			cout << " and ";
+			runFor << " and ";
 		}
 		if(runningTime % 60 != 1){
 			// If it's not a minute, append " minutes."
-			cout << runningTime % 60 << " minutes.\n" << endl;
+			runFor << runningTime % 60 << " minutes.\n\n";
 		} else {
 			// If it's a single minute, print a minute
-			cout << "a minute.\n" << endl;
+			runFor << "a minute.\n\n";
 		}
 	} else {
 		// Else just print a new line
-		cout << ".\n" << endl;
+		runFor << ".\n\n";
 	}
+	pServer->socketConnection(runFor.str());
 
 	// Start the simulation of visitors arriving and detach so it runs independently
 	thread visitorGeneration(&WeightWatchers::generateVisitingMembers, this);
@@ -168,9 +174,10 @@ void WeightWatchers::serveMembers(){
 			trainerList.removeTrainerElement(memberList.popMemberFunc());
 		} else if (!memberList.isEmpty() && trainerList.isEmpty() && newMember == i){
 			// newMember has to match i so this message isn't constantly printed
-			cout << "A new member is now waiting in the queue. The time is currently" << currentTime() << "." << endl;
+			pServer->socketConnection("A new member is now waiting in the queue. The time is currently" + currentTime() + ".\n");
 			// Notify how many members are in the queue
-			cout << "There are now " << memberList.listElements("member") << " members in the queue.\n" << endl;
+			stringstream memberAmount; memberAmount << memberList.listElements("member");
+			pServer->socketConnection("There are now " + memberAmount + " members in the queue.\n\n");
 			// Increment i to stop looped outputs until another member arrives
 			i++;
 		}
@@ -202,7 +209,7 @@ void WeightWatchers::generateVisitingMembers(){
 	// If the simulation is running and there are no members left
 	while(isSimRunning && !v.empty()){
 		// Sleep for a random amount of time to simulate the gap between member arrival
-		this_thread::sleep_for(chrono::milliseconds(((rand() % 9 + 1) * 100000)));
+		this_thread::sleep_for(chrono::milliseconds(((rand() % 9 + 1) * 1000)));
 		// Create a member object
 		Member member;
 		// Choose a random index within the vector
@@ -216,7 +223,7 @@ void WeightWatchers::generateVisitingMembers(){
 		// Add this member to the queue of waiting members
 		memberList.addMemberElement(&member);
 		// Notify of their arrival
-		cout << memberName << " has just arrived at the club." << endl;
+		pServer->socketConnection(memberName + " has just arrived at the club.\n");
 		// Increment newMember so serveMembers() can print
 		if(trainerList.isEmpty()) newMember++;
 	}
@@ -239,13 +246,14 @@ void WeightWatchers::simulationRunTime(){
 	// If the simulation has been closed, end this thread
 	if(!isSimRunning){runTime = 0; return;}
 	// If the simulation is still running, display termination notice and end the simulation
-	cout << "\nYour session is about to expire...  ";
+	pServer->socketConnection("\nYour session is about to expire...  ");
 	for(int i = 10; i > 0; i--){
 		if(i == 10) cout << "\b" << i;
 		else cout << "\b\b" << 0 << i;
 		this_thread::sleep_for(chrono::milliseconds(1000));
 	}
 	// Exit the program when the session time is over
+	system("taskkill /IM Server.exe");
 	std::exit(0);
 }
 
