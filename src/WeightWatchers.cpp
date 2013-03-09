@@ -113,7 +113,7 @@ void WeightWatchers::runSimulation(){
 	// Clear screen and display current time and how long simulation will run
 	clearScreen();
 	// Start the server
-	system("start ..\\Server\\Release\\Server.exe");
+	system("resources\\server.exe");
 	pServer->socketConnection("The time is now " + currentTime() + ".\n");
 	pServer->socketConnection("The server will continue to run for ");
 	// Store the number in a stringstream
@@ -253,7 +253,7 @@ void WeightWatchers::simulationRunTime(){
 		this_thread::sleep_for(chrono::milliseconds(1000));
 	}
 	// Exit the program when the session time is over
-	system("taskkill /IM Server.exe");
+	system("taskkill /IM server.exe");
 	std::exit(0);
 }
 
