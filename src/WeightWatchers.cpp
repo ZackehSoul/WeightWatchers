@@ -177,7 +177,7 @@ void WeightWatchers::serveMembers(){
 			pServer->socketConnection("A new member is now waiting in the queue. The time is currently" + currentTime() + ".\n");
 			// Notify how many members are in the queue
 			stringstream memberAmount; memberAmount << memberList.listElements("member");
-			pServer->socketConnection("There are now " + memberAmount + " members in the queue.\n\n");
+			pServer->socketConnection("There are now " + memberAmount.str() + " members in the queue.\n\n");
 			// Increment i to stop looped outputs until another member arrives
 			i++;
 		}
