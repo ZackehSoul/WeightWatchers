@@ -1,10 +1,11 @@
 #ifndef WEIGHT_WATCHERS_H_
 #define WEIGHT_WATCHERS_H_
 #include <algorithm>			// For validation functions and transform()
-#include <ctime>		// To retrieve the current time
+#include <ctime>				// To retrieve the current time
 #include <fstream>				// Needed for the file stream
 #include <iostream>				// For input/output
 #include "LinkedList.h"			// Needed for the member and trainer queues
+#include "ServerClient.h"		// To allow printing to the server
 #include <thread>				// Support for concurrent programming, experimental
 #include <vector>				// Vector used for the visitor simulation
 
@@ -12,16 +13,17 @@ using namespace std;
 
 class WeightWatchers{
 private:
-	string exitStatus;			// If the user wants to exit the program
-	string memberName;			// The user's name
-	double height;				// The user's height
-	double weight;				// The user's weight
-	string gender;				// The user's gender
-	int runTime;				// The allocated run time of the simulation
-	bool isSimRunning;			// If the simulation is running
-	LinkedList trainerList;		// Queue of trainers waiting to serve clients
-	LinkedList memberList;		// Queue of members waiting to be served
-	int newMember = 0;
+	string exitStatus;							// If the user wants to exit the program
+	string memberName;							// The user's name
+	double height;								// The user's height
+	double weight;								// The user's weight
+	string gender;								// The user's gender
+	int runTime;								// The allocated run time of the simulation
+	int newMember;								// Track the new members
+	bool isSimRunning;							// If the simulation is running
+	LinkedList trainerList;						// Queue of trainers waiting to serve clients
+	LinkedList memberList;						// Queue of members waiting to be served
+	ServerClient * pServer = new ServerClient;	// Pointer to allow printing to server
 public:
 	WeightWatchers();
 	virtual ~WeightWatchers();
