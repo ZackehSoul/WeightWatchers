@@ -1,4 +1,5 @@
-#include <conio.h>
+#include <conio.h>		// For C stuff
+#include <ctime>		// For the current time
 #include <fstream>		// Needed for the file stream
 #include <iostream>		// Needed for input and output
 #include <winsock2.h>	// Needed for socket connection
