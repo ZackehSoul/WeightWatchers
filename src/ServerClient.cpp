@@ -6,12 +6,11 @@
 #define IPAddress "127.0.0.1" 	// 127.0.01 directs to localhost.
 
 ServerClient::ServerClient(){
-	// When the client is called, the serverConnect loop must run
-	serverConnect = true;
+	isRunning = true;
 }
 
 ServerClient::~ServerClient(){
-	// TODO Auto-generated destructor stub
+	isRunning = false;
 }
 
 /**
@@ -22,64 +21,50 @@ ServerClient::~ServerClient(){
  */
 void ServerClient::socketConnection(string message){
 
-	WORD wVersionRequested;		// Used to check if WSAStartup succeeds
-	WSADATA	wsaData;			// Used to check if WSAStartup succeeds
-	SOCKADDR_IN target;			// Socket connection information
-	int	errorCode;				// Error codes if WSAStartup fails
-
 	toSend = message.c_str();	// Converts input string to const char *
 
-	// Initialize other variables
-	wVersionRequested = MAKEWORD(1, 1);
-	// Assign error code if WSAStartup fails
-	errorCode = WSAStartup(wVersionRequested, &wsaData);
-	// If there was an error starting
-	if(errorCode != 0){
-		// Output an error message with the error code.
-		cout << "WSAStartup error: " << static_cast<long>(WSAGetLastError()) << endl;
-		// Then cleanup and return to the outer thread
-		WSACleanup();
-		return;
-	}
-	// Create the address structure to be bound to the socket
-	target.sin_family = AF_INET;
-	// Uses SERVER_PORT defined earlier to connect on
-	target.sin_port = htons(SERVER_PORT);
-	// Sets the target IP, again defined earlier in IPAddress
-	target.sin_addr.s_addr = inet_addr (IPAddress);
+	while(isRunning){
+		// Initialize other variables
+		wVersionRequested = MAKEWORD(1, 1);
+		// Assign error code if WSAStartup fails
+		errorCode = WSAStartup(wVersionRequested, &wsaData);
+		// If there was an error starting
+		if(errorCode != 0){
+			// Output an error message with the error code.
+			cout << "WSAStartup error: " << static_cast<long>(WSAGetLastError()) << endl;
+			// Then cleanup and return to the outer thread
+			WSACleanup();
+			return;
+		}
+		// Create the address structure to be bound to the socket
+		target.sin_family = AF_INET;
+		// Uses SERVER_PORT defined earlier to connect on
+		target.sin_port = htons(SERVER_PORT);
+		// Sets the target IP, again defined earlier in IPAddress
+		target.sin_addr.s_addr = inet_addr (IPAddress);
 
-	// Create a new socket
-	serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	// If the socket is invalid throw an error
-	if(serverSocket == INVALID_SOCKET){
-		// Output an error message
-		cout << "Socket error: " << static_cast<long>(WSAGetLastError()) << endl;
-		// Then cleanup and return to the outer thread
+		// Create a new socket
+		serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+		// If the socket is invalid throw an error
+		if(serverSocket == INVALID_SOCKET){
+			// Output an error message
+			cout << "Socket error: " << static_cast<long>(WSAGetLastError()) << endl;
+			// Then cleanup and return to the outer thread
+			WSACleanup();
+			return;
+		}
+		// If there is a connection error to the socket
+		if(connect(serverSocket, (SOCKADDR *)&target, sizeof(target)) == SOCKET_ERROR){
+			// Output an error message and error code
+			cout << "Connection error: " << static_cast<long>(WSAGetLastError()) << endl;
+			// Then cleanup and return to the outer thread
+			WSACleanup();
+			return;
+		}
+		send(serverSocket, toSend, 80, 0);
+		// Close the socket and clean up
+		closesocket(serverSocket);
 		WSACleanup();
-		return;
 	}
-	// If there is a connection error to the socket
-	if(connect(serverSocket, (SOCKADDR *)&target, sizeof(target)) == SOCKET_ERROR){
-		// Output an error message and error code
-		cout << "Connection error: " << static_cast<long>(WSAGetLastError()) << endl;
-		// Then cleanup and return to the outer thread
-		WSACleanup();
-		return;
-	}
-	send(serverSocket, toSend, 80, 0);
-	// Close the socket and clean up
-	closesocket(serverSocket);
-	WSACleanup();
-	_getche();
 	return; // End the thread
-}
-
-/**
- * Called by any classes which need to output to the server.
- *
- * @param message the message to be sent to the server
- */
-void ServerClient::toServer(string message){
-	// End the server connection
-	socketConnection(message);
 }
