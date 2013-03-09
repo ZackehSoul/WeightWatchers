@@ -104,9 +104,9 @@ int main(int argc, char * argv[]){
 			WSACleanup();
 		}
 		// Output the received message to the server window
-		cout << inputMessage << endl;
+		cout << inputMessage;
 		// Write the received message to the output file
-		simLog << inputMessage << endl;
+		simLog << inputMessage;
 		// Close socketB
 		closesocket(socketB);
 	}
