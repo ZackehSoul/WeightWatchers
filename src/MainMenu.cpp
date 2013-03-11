@@ -27,16 +27,16 @@ int main() {
 		// Clear the screen
 		pMain->clearScreen();
 		// Open the members file
-		ifstream memberFile("resources\\members\\" + firstName + " " + lastName + ".txt");
+		ifstream memberFile("..\\resources\\members\\" + firstName + " " + lastName + ".txt");
 		ofstream members;
 		// If they already have a file, display this
 		if(memberFile){
 			cout << "Welcome back, " << firstName << "." << endl;
 		} else {
 			// If they haven't, create their new file
-			ofstream createFile("resources\\members\\" + firstName + " " + lastName + ".txt");
+			ofstream createFile("..\\resources\\members\\" + firstName + " " + lastName + ".txt");
 			// Also add them to the members list
-			members.open("resources\\members.txt", ios_base::app);
+			members.open("..\\resources\\members.txt", ios_base::app);
 			members << firstName << " " << lastName << endl;
 			// Close the stream and welcome them to the club
 			members.close();

@@ -113,7 +113,7 @@ void WeightWatchers::runSimulation(){
 	// Clear screen and display current time and how long simulation will run
 	clearScreen();
 	// Start the server
-	system("resources\\server.exe");
+	system("start ..\\resources\\server.exe");
 	pServer->socketConnection("The time is now " + currentTime() + ".\n");
 	pServer->socketConnection("The server will continue to run for ");
 	// Store the number in a stringstream
