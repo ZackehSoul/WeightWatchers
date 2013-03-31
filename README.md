@@ -3,7 +3,7 @@ WeightWatchers
 
 Second year assignment for Object Oriented Systems &amp; Development. Point of the assignment was to implement a Client/Server system in C++ which could just receive basic input from the client and display it on the system.
 
-The Server source can be found [here](https://gist.github.com/ZackehSoul/5126034), however I included the `server.exe` binary in the `resources\` directory. The code just needs building in a new project with the `ws2_32` library included.
+The Server source can be found [here](https://gist.github.com/ZackehSoul/5126145), however I included the `server.exe` binary in the `resources\` directory. The code just needs building in a new project with the `ws2_32` library included.
 
 This code is protected via the default GitHub copyright license such that:
 
